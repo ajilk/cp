@@ -11,7 +11,6 @@
 #define DEBUG(x) cout << RED << "\n==> " << RESET << #x << ": " << x;
 
 #include <iostream>
-#include <vector>
 using namespace std;
 
 template <class T>
