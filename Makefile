@@ -3,4 +3,4 @@ all:
 run:
 	@./a.out
 clean:
-	rm a.out
+	rm -f a.out
