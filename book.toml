@@ -6,6 +6,13 @@ title = "cp"
 
 [output.html]
 cname = "cp.ajilk.com"
+git-repository-url = "https://github.com/ajilk/cp"
+additional-css = ["./theme/catppuccin.css"]
+no-section-label = true
+default-theme = "latte"
+preferred-dark-theme = "ayu"
 
 [output.html.print]
 enable = false
+
+[preprocessor.alerts]
