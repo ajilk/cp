@@ -22,9 +22,6 @@ jobs:
           mkdir mdbook
           curl -sSL $url | tar -xz --directory=./mdbook
           echo `pwd`/mdbook >> $GITHUB_PATH
-      - name: Install latest mdbook-alerts
-        run: |
-          cargo install mdbook-alerts
       - name: Build Book
         run: |
           mdbook build

@@ -14,5 +14,3 @@ preferred-dark-theme = "ayu"
 
 [output.html.print]
 enable = false
-
-[preprocessor.alerts]
