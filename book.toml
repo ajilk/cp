@@ -1,0 +1,11 @@
+[book]
+authors = ["Azimjon Ilkhomov"]
+language = "en"
+src = "src"
+title = "cp"
+
+[output.html]
+cname = "cp.ajilk.com"
+
+[output.html.print]
+enable = false
