@@ -1,2 +1,5 @@
 book
 
+# mac specific
+.DS_Store
+
