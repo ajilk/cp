@@ -11,6 +11,7 @@ additional-css = ["./theme/catppuccin.css"]
 no-section-label = true
 default-theme = "latte"
 preferred-dark-theme = "ayu"
+mathjax-support = true
 
 [output.html.print]
 enable = false
