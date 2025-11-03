@@ -1,3 +1,4 @@
 # Algorithms
 
-[Binary Search](./algorithms/binary_search.md)
+- [Binary Search](./algorithms/binary_search.md)
+- [Trie](./algorithms/trie.md)
