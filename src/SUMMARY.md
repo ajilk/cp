@@ -18,8 +18,8 @@
 # Patterns
 
 - [Dynamic Programming]()
-- [Depth First Search]()
-- [Breadth First Search]()
+- [Depth First Search](patterns/dfs.md)
+- [Breadth First Search](patterns/bfs.md)
 - [Tree Traversal]()
 - [Graph Traversal]()
 - [Two-Pointer]()
