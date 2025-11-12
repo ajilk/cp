@@ -1,4 +1,4 @@
-def postorder(node: TreeNode) -> List[TreeNode]:
+def postorder(node: Optional[TreeNode]) -> List[TreeNode]:
     if not node:
         return []
 

@@ -1,4 +1,4 @@
-def preorder(node: TreeNode) -> List:
+def preorder(node: Optional[TreeNode]) -> List:
     if not node:
         return []
 

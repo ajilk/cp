@@ -1,4 +1,4 @@
-def inorder(node: TreeNode) -> List[TreeNode]:
+def inorder(node: Optional[TreeNode]) -> List[TreeNode]:
     if not node:
         return []
 

@@ -1,4 +1,4 @@
-def preorder(node: TreeNode) -> List[TreeNode]:
+def preorder(node: Optional[TreeNode]) -> List[TreeNode]:
     stack = []
     result = []
 
