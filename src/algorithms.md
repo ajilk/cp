@@ -1,3 +1,0 @@
-# Algorithms
-
-common algorithms
