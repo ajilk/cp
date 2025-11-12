@@ -18,12 +18,14 @@
 # Patterns
 
 - [Dynamic Programming]()
-- [Depth First Search](patterns/dfs.md)
-- [Breadth First Search](patterns/bfs.md)
-- [Tree Traversal]()
+- [Tree Traversal](patterns/tree_traversal.md)
+  - [Breadth First Search](patterns/bfs.md)
+  - [Depth First Search](patterns/tree/dfs/dfs.md)
+    - [Preorder](patterns/tree/dfs/preorder.md)
+    - [Inorder](patterns/tree/dfs/inorder.md)
+    - [Postorder](patterns/tree/dfs/postorder.md)
 - [Graph Traversal]()
 - [Two-Pointer]()
-- [Topological Sort]()
 
 # Questions
 
@@ -35,6 +37,7 @@
   - [Reorder List](leetcode/143.md)
 - [Tree](leetcode/tree.md)
   - [Construct Binary Tree from Preorder and Inorder Traversal](leetcode/105.md)
+  - [Validate Binary Search Tree](leetcode/98.md)
 - [Graph](leetcode/graph.md)
   - [Graph Valid Tree](leetcode/261.md)
 - [Other](leetcode/other.md)
