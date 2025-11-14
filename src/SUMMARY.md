@@ -40,7 +40,9 @@
   - [Validate Binary Search Tree](leetcode/98.md)
 - [Graph](leetcode/graph.md)
   - [Graph Valid Tree](leetcode/261.md)
-- [Other](leetcode/other.md)
+
+# Other
+- [Resources](resources.md)
 
 # Author
 
