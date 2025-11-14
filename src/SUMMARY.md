@@ -6,11 +6,16 @@
 - [Naming Convention](naming.md)
 - [Useful Functions](functions.md)
 
+# Data Structures
+
+- [Trie](data_structures/trie.md)
+- [Union Find](data_structures/uf.md)
+- [Fenwick Trees](data_structures/fenwick_tree.md)
+- [Segment Trees](data_structures/segement_tree.md)
+
 # Algorithms
 
 - [Binary Search](algorithms/binary_search.md)
-- [Union Find]()
-- [Trie](algorithms/trie.md)
 - [Kadane's Alogrithm](algorithms/kadane.md)
 - [Floyd's Cycle Detection Algorithm](algorithms/floyd.md)
 - [Kahn's Algorithm](algorithms/kahn.md)
@@ -42,6 +47,7 @@
   - [Graph Valid Tree](leetcode/261.md)
 
 # Other
+
 - [Resources](resources.md)
 
 # Author
