@@ -45,6 +45,15 @@
   - [Validate Binary Search Tree](leetcode/98.md)
 - [Graph](leetcode/graph.md)
   - [Graph Valid Tree](leetcode/261.md)
+- [Dynamic Programming](leetcode/dp.md)
+  - [Maximum Subarray](leetcode/53.md)
+  - [Maximum Product Subarray](leetcode/152.md)
+- [Math](leetcode/math.md)
+  - [Missing Number](leetcode/268.md)
+  
+# Miscellaneous
+
+- [Gauss' Formula](misc/gauss.md)
 
 # Other
 

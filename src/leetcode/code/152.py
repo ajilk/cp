@@ -1,0 +1,11 @@
+class Solution:
+    def maxProduct(self, A: List[int]) -> int:
+        mx = mn = 1
+        result = -inf
+
+        for v in A:
+            values = [v, v * mx, v * mn]
+            mx, mn = max(values), min(values)
+            result = max(result, mx)
+
+        return result

@@ -42,6 +42,7 @@ Below is the naming convention I use for commonly used variables
 |                   `pre` | previous list node                                |
 |                   `cur` | current list node                                 |
 |                   `nxt` | next list node                                    |
+|        `p`, `q`, `node` | pointer to tree nodes                             |
 |                    `uf` | union find                                        |
 |               `visited` | visited elements                                  |
 |                  `seen` | seen elements                                     |
