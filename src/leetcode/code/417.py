@@ -1,0 +1,26 @@
+class Solution:
+    def pacificAtlantic(self, M: List[List[int]]) -> List[List[int]]:
+        m, n = len(M), len(M[0])
+        offsets = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        pacific, atlantic = set(), set()
+
+        def neighbors(y: int, x: int, ocean: Set[Tuple[int, int]]) -> Iterator[Tuple[int, int]]:
+            for dy, dx in offsets:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < m and 0 <= nx < n and M[ny][nx] >= M[y][x] and (ny, nx) not in ocean:
+                    yield (ny, nx)
+        
+        def dfs(i: int, j: int, ocean: Set[Tuple[int, int]]) -> None:
+            ocean.add((i, j))
+            for ii, jj in neighbors(i, j, ocean):
+                dfs(ii, jj, ocean)
+        
+        for i in range(m):
+            dfs(i, 0, pacific)
+            dfs(i, n-1, atlantic)
+
+        for j in range(n):
+            dfs(0, j, pacific)
+            dfs(m-1, j, atlantic)
+        
+        return list(pacific & atlantic)
