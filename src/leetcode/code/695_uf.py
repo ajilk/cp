@@ -1,0 +1,50 @@
+class UnionFind:
+    def __init__(self, size: int) -> None:
+        self.root = list(range(size))
+        self.area = [1] * size
+    
+    def find(self, x: int) -> int:
+        rx = self.root[x]
+        if rx != x:
+            rx = self.find(rx)
+            self.root[x] = rx
+        return rx
+    
+    def union(self, x: int, y: int) -> bool:
+        rx = self.find(x)
+        ry = self.find(y)
+        if rx != ry:
+            self.root[rx] = ry
+            self.area[ry] += self.area[rx]
+            return True
+        return False
+
+class Solution:
+    def maxAreaOfIsland(self, M: List[List[int]]) -> int:
+        m, n = len(M), len(M[0])
+        offsets = [(0, 1), (1, 0)]
+
+        def neighbors(y: int, x: int) -> Iterator[Tuple[int, int]]:
+            for dy, dx in offsets:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < m and 0 <= nx < n and M[ny][nx] == 1:
+                    yield (ny, nx)
+        
+        def idx(i: int, j: int) -> int:
+            return i * n + j
+
+        uf = UnionFind(m * n)
+        for i in range(m):
+            for j in range(n):
+                if M[i][j] == 1:
+                    for ii, jj in neighbors(i, j):
+                        a, b = idx(i, j), idx(ii, jj)
+                        uf.union(a, b)
+        area = 0
+        for i in range(m):
+            for j in range(n):
+                if M[i][j] == 1:
+                    rij = uf.find(idx(i, j))
+                    area = max(area, uf.area[rij])
+        
+        return area
