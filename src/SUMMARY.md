@@ -22,15 +22,16 @@
 
 # Patterns
 
-- [Dynamic Programming]()
+- [Dynamic Programming](patterns/dp.md)
 - [Tree Traversal](patterns/tree_traversal.md)
   - [Breadth First Search](patterns/bfs.md)
   - [Depth First Search](patterns/tree/dfs/dfs.md)
     - [Preorder](patterns/tree/dfs/preorder.md)
     - [Inorder](patterns/tree/dfs/inorder.md)
     - [Postorder](patterns/tree/dfs/postorder.md)
-- [Graph Traversal]()
-- [Two-Pointer]()
+- [Backtracking](patterns/backtracking.md)
+- [Graph](patterns/graph.md)
+- [Two-Pointer](patterns/two_pointer.md)
 
 # Questions
 
@@ -45,6 +46,8 @@
 - [Tree](leetcode/tree.md)
   - [Construct Binary Tree from Preorder and Inorder Traversal](leetcode/105.md)
   - [Validate Binary Search Tree](leetcode/98.md)
+- [Backtracking](leetcode/backtracking.md)
+  - [Letter Combinations of a Phone Number](leetcode/17.md)
 - [Graph](leetcode/graph.md)
   - [Graph Valid Tree](leetcode/261.md)
 - [Dynamic Programming](leetcode/dp.md)

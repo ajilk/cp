@@ -39,6 +39,7 @@ Below is the naming convention I use for commonly used variables
 |                     `c` | character in string                               |
 |                `s`, `e` | start, end                                        |
 |              `ps`, `pe` | previous start, previous end                      |
+|          `slow`, `fast` | slow, fast pointers                               |
 |                   `pre` | previous list node                                |
 |                   `cur` | current list node                                 |
 |                   `nxt` | next list node                                    |
