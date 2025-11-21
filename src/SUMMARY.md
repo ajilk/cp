@@ -8,10 +8,13 @@
 
 # Data Structures
 
-- [Trie](data_structures/trie.md)
+- [Singly Linked List](data_structures/sll.md)
+- [Doubly Linked List](data_structures/dll.md)
+- [Graph](data_structures/graph.md)
 - [Union Find](data_structures/uf.md)
 - [Fenwick Trees](data_structures/fenwick_tree.md)
 - [Segment Trees](data_structures/segement_tree.md)
+- [Trie](data_structures/trie.md)
 
 # Algorithms
 
@@ -43,6 +46,7 @@
   - [Max Area of Island](leetcode/695.md)
 - [Linked List](leetcode/linked_list.md)
   - [Reorder List](leetcode/143.md)
+  - [LRU Cache](leetcode/146.md)
 - [Tree](leetcode/tree.md)
   - [Construct Binary Tree from Preorder and Inorder Traversal](leetcode/105.md)
   - [Validate Binary Search Tree](leetcode/98.md)
