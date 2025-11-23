@@ -25,6 +25,7 @@
 
 # Patterns
 
+- [Prefix Sum](patterns/prefix_sum.md)
 - [Dynamic Programming](patterns/dp.md)
 - [Tree Traversal](patterns/tree_traversal.md)
   - [Breadth First Search](patterns/bfs.md)
@@ -40,6 +41,8 @@
 
 - [Array](leetcode/array.md)
   - [Two Sum](leetcode/1.md)
+- [Prefix Sum](leetcode/prefix_sum.md)
+  - [Subarray Sum Equals K](leetcode/560.md)
 - [Matrix](leetcode/matrix.md)
   - [Surrounded Regions](leetcode/130.md)
   - [Pacific Atlantic Water Flow](leetcode/417.md)
