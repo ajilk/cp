@@ -43,6 +43,8 @@
   - [Two Sum](leetcode/1.md)
   - [Prefix Sum](leetcode/prefix_sum.md)
     - [Subarray Sum Equals K](leetcode/560.md)
+  - [Find the Duplicate Number](leetcode/287.md)
+  - [Search in Rotated Sorted Array](leetcode/33.md)
 - [Matrix](leetcode/matrix.md)
   - [Surrounded Regions](leetcode/130.md)
   - [Pacific Atlantic Water Flow](leetcode/417.md)
