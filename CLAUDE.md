@@ -52,7 +52,6 @@ Note: `fumadocs-mdx` runs automatically after `bun install` via the postinstall 
 - `content/docs/` - All documentation content
   - `meta.json` - Navigation structure for root
   - `{category}/meta.json` - Navigation for each category
-  - `{category}/code/` - Python code files
 - `.source/` - Auto-generated (gitignored)
 - `out/` - Production build output (gitignored)
 
@@ -72,11 +71,10 @@ The repository follows this organization:
 ### File Organization Pattern
 
 Each content file follows this pattern:
-- MDX/Markdown file with frontmatter (e.g., `content/docs/leetcode/146.md`)
-- Python code in a parallel `code/` subdirectory (e.g., `content/docs/leetcode/code/146_dict.py`, `content/docs/leetcode/code/146_dll.py`)
-- Code is included via Fumadocs' `<include>` component
+- MDX/Markdown file with frontmatter (e.g., `content/docs/leetcode/array/146.md`)
+- Python code is embedded directly in the markdown file using code blocks
 
-When a problem has multiple solutions, use suffixes like `_dict.py`, `_dll.py`, `_single_iteration.py`.
+When a problem has multiple solutions, include all approaches in the same markdown file with descriptive headers (e.g., "#### using dictionary", "#### using doubly linked list").
 
 ### Navigation Structure
 
@@ -128,45 +126,49 @@ When adding new code, adhere to these conventions for consistency.
 ### Adding a LeetCode problem
 
 1. Determine the appropriate category (array, matrix, linked list, tree, graph, dp, backtracking, math)
-2. Create the markdown file: `content/docs/leetcode/{number}.md`
-3. Create the Python solution: `content/docs/leetcode/code/{number}.py` (or multiple files with suffixes for different approaches)
-4. Add the problem to `content/docs/leetcode/meta.json` in the appropriate section
-5. Use this template for the markdown:
+2. Create the markdown file in the appropriate subdirectory: `content/docs/leetcode/{category}/{number}.md`
+3. Add the problem to `content/docs/leetcode/{category}/meta.json` in the appropriate section
+4. Use this template for the markdown:
 
 ```markdown
 ---
 title: {number}. {Problem Title}
 ---
 
-# {number}. {Problem Title}
 
-<include lang="python">code/{number}.py</include>
+```python
+class Solution:
+    def methodName(self, params) -> ReturnType:
+        # Solution code here
+        pass
+```
 
 | Metric           | Complexity | Reason                    |
 | ---------------- | ---------- | ------------------------- |
-| Time Complexity  | O(...)     | Explanation               |
-| Space Complexity | O(...)     | Explanation               |
+| Time Complexity  | $O(...)$   | Explanation               |
+| Space Complexity | $O(...)$   | Explanation               |
+```
 
-#### Related Problems
+For problems with multiple solutions, include all approaches in the same file with descriptive headers:
 
-- [{number}. {Problem}](../leetcode/{number}.md)
-- [{Algorithm}](../algorithms/{algorithm}.md)
+```markdown
+#### using dictionary
+```python
+# First approach
+```
+
+#### using doubly linked list
+```python
+# Second approach
+```
 ```
 
 ### Adding a data structure or algorithm
 
 1. Create markdown in `content/docs/data_structures/{name}.md` or `content/docs/algorithms/{name}.md`
-2. Create implementation in corresponding `code/` subdirectory
-3. Update the appropriate `meta.json` file
+2. Embed Python implementation directly in the markdown file using code blocks
+3. Update the appropriate `meta.json` file to include the new page
 4. Link related LeetCode problems at the bottom
-
-### Including code files
-
-Use the `<include>` component with the language attribute:
-
-```mdx
-<include lang="python">code/example.py</include>
-```
 
 ## Deployment
 
