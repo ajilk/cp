@@ -1,0 +1,10 @@
+{
+  "title": "Algorithms",
+  "icon": "Binary",
+  "pages": [
+    "binary_search",
+    "kadane",
+    "floyd",
+    "kahn"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Leetcode",
+  "icon": "Code",
+  "pages": [
+    "array",
+    "matrix",
+    "linked_list",
+    "tree",
+    "backtracking",
+    "graph",
+    "dp",
+    "math"
+  ]
+}

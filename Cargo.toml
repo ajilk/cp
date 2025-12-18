@@ -1,7 +1,0 @@
-[package]
-name = "cp"
-version = "0.0.1"
-edition = "2025"
-
-[dependencies]
-mdbook = "0.4.52"
