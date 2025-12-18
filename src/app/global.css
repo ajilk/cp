@@ -2,18 +2,3 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 @import 'katex/dist/katex.min.css';
-
-/* Increase sidebar width */
-:root {
-  --fd-sidebar-width: 320px;
-}
-
-[data-sidebar] {
-  width: 320px !important;
-}
-
-@media (min-width: 1024px) {
-  aside[data-sidebar] {
-    width: 320px !important;
-  }
-}
