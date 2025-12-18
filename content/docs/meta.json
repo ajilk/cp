@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "introduction",
+    "naming",
+    "functions",
+    "---Content---",
+    "data_structures",
+    "algorithms",
+    "patterns",
+    "leetcode",
+    "---Other---",
+    "misc",
+    "resources",
+    "---Author---",
+    "author"
+  ]
+}

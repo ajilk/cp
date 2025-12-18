@@ -1,0 +1,13 @@
+{
+  "title": "Data Structures",
+  "icon": "Database",
+  "pages": [
+    "sll",
+    "dll",
+    "graph",
+    "uf",
+    "fenwick_tree",
+    "segement_tree",
+    "trie"
+  ]
+}

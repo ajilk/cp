@@ -1,0 +1,4 @@
+---
+title: Kahn's Algorithm
+---
+
