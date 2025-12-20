@@ -5,6 +5,7 @@
     "binary_search",
     "kadane",
     "floyd",
+    "floyd_warshall",
     "kahn"
   ]
 }
