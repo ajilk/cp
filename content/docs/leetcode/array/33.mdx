@@ -2,8 +2,13 @@
 title: 33. Search in Rotated Sorted Array
 ---
 
+<Tabs items={['Single Iteration', 'Using Pivot', 'Sameside Flag']}>
+<Tab value="Single Iteration">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(\log n)$ | Binary search in one pass   |
+| Space Complexity | $O(1)$     | Only uses constant variables |
 
-**single iteration**
 ```python
 class Solution:
     def search(self, A: List[int], target: int) -> int:
@@ -27,10 +32,15 @@ class Solution:
                     right = mid - 1
 
         return -1
-
 ```
 
-**using pivot**
+</Tab>
+<Tab value="Using Pivot">
+| Metric           | Complexity | Reason                                  |
+| ---------------- | ---------- | --------------------------------------- |
+| Time Complexity  | $O(\log n)$ | Two binary searches (find pivot + search) |
+| Space Complexity | $O(1)$     | Only uses constant variables            |
+
 ```python
 class Solution:
     def search(self, A: List[int], target: int) -> int:
@@ -43,16 +53,16 @@ class Solution:
                 left = mid + 1
             else:
                 right = mid
-        
+
         pivot = left
-        
+
         if pivot == 0:
             left, right = 0, n - 1
         elif A[0] <= target <= A[pivot - 1]:
             left, right = 0, pivot - 1
         else:
             left, right = pivot, n - 1
-        
+
         while left <= right:
             mid = left + (right - left) // 2
             if A[mid] < target:
@@ -63,10 +73,14 @@ class Solution:
                 return mid
 
         return -1
-
 ```
+</Tab>
+<Tab value="Sameside Flag">
+| Metric           | Complexity | Reason                                 |
+| ---------------- | ---------- | -------------------------------------- |
+| Time Complexity  | $O(\log n)$ | Binary search with virtual transformation |
+| Space Complexity | $O(1)$     | Only uses constant variables           |
 
-**using sameside flag**
 ```python
 class Solution:
     def search(self, A: List[int], target: int) -> int:
@@ -75,13 +89,13 @@ class Solution:
 
         while left <= right:
             mid = left + (right - left) // 2
-            
+
             sameside = (A[0] > A[mid]) == (A[0] > target)
             if sameside:
                 v = A[mid]
             else:
                 v = -inf if target < A[mid] else inf
-            
+
             if v < target:
                 left = mid + 1
             elif v > target:
@@ -90,5 +104,6 @@ class Solution:
                 return mid
 
         return -1
-
 ```
+</Tab>
+</Tabs>
