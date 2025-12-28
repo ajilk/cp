@@ -2,7 +2,6 @@
 title: Naming Convention
 ---
 
-
 Maintaining a consistent naming system is key to optimizing solving time. Some benefits include:
 
 - reduced overhead
@@ -16,6 +15,7 @@ Below is the naming convention I use for commonly used variables
 |           variable name | description                                       |
 | ----------------------: | :------------------------------------------------ |
 |                     `A` | array                                             |
+|                     `I` | interval array                                    |
 |                     `v` | value in an array                                 |
 |             `n`, `size` | array size                                        |
 |                     `M` | matrix                                            |
