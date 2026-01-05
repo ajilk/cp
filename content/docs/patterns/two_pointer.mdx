@@ -1,0 +1,63 @@
+---
+title: Two-Pointer
+---
+
+<Tabs items={['Opposite Ends', 'Slow-Fast', 'Sliding Window']}>
+<Tab value="Opposite Ends">
+```python
+# converging from both ends
+left, right = 0, n - 1
+
+while left < right:
+    # process A[left] and A[right]
+
+    if condition:
+        left += 1
+    else:
+        right -= 1
+```
+</Tab>
+<Tab value="Slow-Fast">
+```python
+# slow and fast pointers
+slow = fast = start
+
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+
+    # detect cycle
+    if slow == fast:
+        break
+
+# find cycle start or middle
+slow = start
+while slow != fast:
+    slow = slow.next
+    fast = fast.next
+```
+</Tab>
+<Tab value="Sliding Window">
+```python
+# variable window
+left = 0
+
+for right in range(n):
+    # expand window: add A[right]
+
+    while condition:
+        # shrink window: remove A[left]
+        left += 1
+
+    # update result
+
+# or fixed window
+for right in range(n):
+    if right >= k:
+        # remove A[right - k]
+
+    # add A[right]
+    # update result
+```
+</Tab>
+</Tabs>

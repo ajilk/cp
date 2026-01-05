@@ -2,8 +2,8 @@
 title: 98. Validate Binary Search Tree
 ---
 
-
-#### generative
+<Tabs items={['Generative', 'Recursive', 'Iterative']}>
+<Tab value="Generative">
 ```python
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
@@ -14,10 +14,9 @@ class Solution:
                 yield from inorder(node.right)
 
         return all(a < b for a, b in pairwise(inorder(root)))
-
 ```
-
-#### recursive
+</Tab>
+<Tab value="Recursive">
 ```python
 class Solution:
     def isValidBST(
@@ -32,10 +31,9 @@ class Solution:
         return self.isValidBST(node.left, low, node.val) and self.isValidBST(
             node.right, node.val, high
         )
-
 ```
-
-#### iterative
+</Tab>
+<Tab value="Iterative">
 ```python
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
@@ -54,5 +52,6 @@ class Solution:
             node = node.right
 
         return True
-
 ```
+</Tab>
+</Tabs>

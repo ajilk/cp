@@ -2,8 +2,8 @@
 title: Union Find
 ---
 
-
-#### without rank
+<Tabs items={['Without Rank', 'With Rank']}>
+<Tab value="Without Rank">
 ```python
 class UnionFind:
     def __init__(self, size: int) -> None:
@@ -23,10 +23,9 @@ class UnionFind:
             self.root[rx] = ry
             return True
         return False
-
 ```
-
-#### with rank
+</Tab>
+<Tab value="With Rank">
 ```python
 class UnionFind:
     def __init__(self, size: int) -> None:
@@ -53,5 +52,6 @@ class UnionFind:
                 self.rank[rx] += 1
             return True
         return False
-
 ```
+</Tab>
+</Tabs>
