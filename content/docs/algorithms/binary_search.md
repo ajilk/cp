@@ -23,4 +23,4 @@ def bs(A: List[int], target: int) -> None:
 
 #### Related Problems
 
-- [33. Search in Rotated Sorted Array](../leetcode/array/33.md)
+- [33. Search in Rotated Sorted Array](../leetcode/array/33.mdx)
