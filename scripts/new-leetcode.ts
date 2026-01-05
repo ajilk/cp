@@ -2,8 +2,10 @@
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join, dirname, basename, extname } from 'path';
+import { fileURLToPath } from 'url';
 
-const CONTENT_DIR = join(import.meta.dir, '..', 'content', 'docs', 'leetcode');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const CONTENT_DIR = join(__dirname, '..', 'content', 'docs', 'leetcode');
 
 const args = process.argv.slice(2);
 if (args.length === 0 || !args[0].includes('/')) {
