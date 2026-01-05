@@ -2,20 +2,17 @@
 title: Postorder
 ---
 
-
-#### generative
-
+<Tabs items={['Generative', 'Recursive', 'Iterative']}>
+<Tab value="Generative">
 ```python
 def postorder(node: Optional[TreeNode]) -> Iterator[TreeNode]:
     if node:
         yield from postorder(node.left)
         yield from postorder(node.right)
         yield node
-
 ```
-
-#### recursive
-
+</Tab>
+<Tab value="Recursive">
 ```python
 def postorder(node: Optional[TreeNode]) -> List[TreeNode]:
     if not node:
@@ -25,11 +22,9 @@ def postorder(node: Optional[TreeNode]) -> List[TreeNode]:
     right = postorder(node.right)
 
     return left + right + [node]
-
 ```
-
-#### iterative
-
+</Tab>
+<Tab value="Iterative">
 ```python
 def postorder(node: Optional[TreeNode]) -> List[TreeNode]:
     stack = [(root, False)]
@@ -46,5 +41,6 @@ def postorder(node: Optional[TreeNode]) -> List[TreeNode]:
                 stack.append([node.left, False])
 
     return result
-
 ```
+</Tab>
+</Tabs>

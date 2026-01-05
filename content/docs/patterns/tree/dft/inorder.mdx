@@ -2,20 +2,17 @@
 title: Inorder
 ---
 
-
-#### generative
-
+<Tabs items={['Generative', 'Recursive', 'Iterative']}>
+<Tab value="Generative">
 ```python
 def inorder(node: Optional[TreeNode]) -> Iterator[TreeNode]:
     if node:
         yield from inorder(node.left)
         yield node
         yield from inorder(node.right)
-
 ```
-
-#### recursive
-
+</Tab>
+<Tab value="Recursive">
 ```python
 def inorder(node: Optional[TreeNode]) -> List[TreeNode]:
     if not node:
@@ -25,11 +22,9 @@ def inorder(node: Optional[TreeNode]) -> List[TreeNode]:
     right = inorder(node.right)
 
     return left + [node] + right
-
 ```
-
-#### iterative
-
+</Tab>
+<Tab value="Iterative">
 ```python
 def inorder(node: Optional[TreeNode]) -> List[TreeNode]:
     stack = []
@@ -44,5 +39,6 @@ def inorder(node: Optional[TreeNode]) -> List[TreeNode]:
         node = node.right
 
     return result
-
 ```
+</Tab>
+</Tabs>

@@ -4,7 +4,6 @@
   "pages": [
     "prefix_sum",
     "dp",
-    "bfs",
     "tree",
     "backtracking",
     "graph",

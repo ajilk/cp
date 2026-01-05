@@ -1,10 +1,10 @@
 ---
-title: Breadth First Search
+title: Breadth First Traversal
 ---
 
 
 ```python
-def bfs(root: TreeNode) -> List[int]:
+def bft(root: TreeNode) -> List[int]:
     q = deque([root])
     result = []
 

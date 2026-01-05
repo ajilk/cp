@@ -2,22 +2,19 @@
 title: Preorder
 ---
 
-
-#### generative
-
+<Tabs items={['Generative', 'Recursive', 'Iterative']}>
+<Tab value="Generative">
 ```python
 def preorder(node: Optional[TreeNode]) -> Iterator[TreeNode]:
     if node:
         yield node
         yield from preorder(node.left)
         yield from preorder(node.right)
-
 ```
-
-#### recursive
-
+</Tab>
+<Tab value="Recursive">
 ```python
-def preorder(node: Optional[TreeNode]) -> List:
+def preorder(node: Optional[TreeNode]) -> List[TreeNode]:
     if not node:
         return []
 
@@ -25,11 +22,9 @@ def preorder(node: Optional[TreeNode]) -> List:
     right = preorder(node.right)
 
     return [node.val] + left + right
-
 ```
-
-#### iterative
-
+</Tab>
+<Tab value="Iterative">
 ```python
 def preorder(node: Optional[TreeNode]) -> List[TreeNode]:
     stack = []
@@ -44,5 +39,6 @@ def preorder(node: Optional[TreeNode]) -> List[TreeNode]:
         node = node.right
 
     return result
-
 ```
+</Tab>
+</Tabs>
