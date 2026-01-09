@@ -55,4 +55,5 @@ Below is the naming convention I use for commonly used variables
 |      `helper()`, `fn()` | helper functions                                  |
 |        `dfs()`, `bfs()` | depth/breadth first search                        |
 |        `dft()`, `bft()` | depth/breadth first traversal                     |
+|   `bt()`, `backtrack()` | backtrack                                         |
 |                `result` | result                                            |
