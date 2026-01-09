@@ -1,0 +1,174 @@
+---
+title: Floyd's Cycle Detection Algorithm
+---
+
+## Overview
+
+Floyd's Cycle Detection Algorithm (also called the "Tortoise and Hare" algorithm) detects cycles in sequences using two pointers moving at different speeds. When a cycle exists, the fast pointer will eventually catch up to the slow pointer.
+
+**Applications:**
+- Detecting cycles in linked lists
+- Finding duplicate numbers in arrays (treat as implicit linked list)
+- Detecting cycles in functional graphs
+
+## Algorithm Steps
+
+### Phase 1: Cycle Detection
+
+1. Initialize two pointers: `slow` (moves 1 step) and `fast` (moves 2 steps)
+2. Move both pointers until they meet or `fast` reaches the end
+3. If they meet, a cycle exists; otherwise, no cycle
+
+### Phase 2: Find Cycle Start (Optional)
+
+1. Reset one pointer to the start
+2. Move both pointers 1 step at a time
+3. Where they meet is the start of the cycle
+
+## Complexity
+
+- **Time**: $O(n)$ - each pointer visits each node at most once
+- **Space**: $O(1)$ - only two pointers needed
+
+Where n = number of nodes
+
+## Implementation
+
+### Linked List Cycle Detection
+
+```python
+class ListNode:
+    def __init__(self, val: int = 0, next: 'ListNode' = None):
+        self.val = val
+        self.next = next
+
+def has_cycle(head: ListNode | None) -> bool:
+    """Returns True if linked list has a cycle"""
+    if not head:
+        return False
+
+    slow = fast = head
+
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+
+    return False
+```
+
+### Find Cycle Start
+
+```python
+def detect_cycle(head: ListNode | None) -> ListNode | None:
+    """Returns the node where cycle begins, or None if no cycle"""
+    if not head:
+        return None
+
+    slow = fast = head
+
+    # Phase 1: Detect cycle
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            break
+    else:
+        return None  # No cycle
+
+    # Phase 2: Find start of cycle
+    slow = head
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
+
+    return slow
+```
+
+### Array Cycle Detection (Functional Graph)
+
+```python
+def find_duplicate(A: list[int]) -> int:
+    """
+    Find duplicate in array where values are in range [1, n]
+    Treat array as linked list: A[i] points to A[A[i]]
+    """
+    # Phase 1: Detect cycle
+    slow = fast = A[0]
+    while True:
+        slow = A[slow]
+        fast = A[A[fast]]
+        if slow == fast:
+            break
+
+    # Phase 2: Find cycle start (the duplicate)
+    slow = A[0]
+    while slow != fast:
+        slow = A[slow]
+        fast = A[fast]
+
+    return slow
+```
+
+## Example
+
+<div style={{transform: 'scale(1.2)', transformOrigin: 'center', margin: '2rem 0'}}>
+<Mermaid chart={`graph LR
+    A((1)) --> B((2))
+    B --> C((3))
+    C --> D((4))
+    D --> E((5))
+    E --> C
+
+    style C fill:#555,stroke:none,color:#fff
+    style E fill:#555,stroke:none,color:#fff`} />
+</div>
+
+**Linked list with cycle**: Nodes 1→2→3→4→5, where node 5 points back to node 3 (creating a cycle).
+
+```python
+# Create cycle
+node1 = ListNode(1)
+node2 = ListNode(2)
+node3 = ListNode(3)
+node4 = ListNode(4)
+node5 = ListNode(5)
+
+node1.next = node2
+node2.next = node3
+node3.next = node4
+node4.next = node5
+node5.next = node3  # Cycle back to node3
+
+has_cycle(node1)      # True
+detect_cycle(node1)   # Returns node3
+
+# Array example: [1, 3, 4, 2, 2]
+# Indices: 0 -> 1 -> 3 -> 2 -> 4 -> 2 (cycle at 2)
+find_duplicate([1, 3, 4, 2, 2])  # Returns 2
+```
+
+## Why It Works
+
+**Phase 1 (Detection):**
+- In a cycle of length $c$, fast pointer gains 1 position per iteration
+- They will meet within $c$ iterations after both enter the cycle
+
+**Phase 2 (Find Start):**
+- Distance from start to cycle entrance = distance from meeting point to cycle entrance
+- Mathematical proof uses modular arithmetic on cycle length
+
+## Key Points
+
+- Uses two pointers: slow (1 step) and fast (2 steps)
+- Space-efficient: $O(1)$ space vs $O(n)$ for hash set approach
+- Guaranteed to detect cycle if one exists
+- Can find cycle start with second phase
+- Works on any functional graph (implicit or explicit linked structure)
+- Fast pointer must check `fast and fast.next` to avoid null pointer
+- For arrays, interpret indices as implicit linked list
+
+## Related Problems
+
+- [287. Find the Duplicate Number](../leetcode/array/287.md)

@@ -2,29 +2,130 @@
 title: Floyd-Warshall Algorithm
 ---
 
-Finds the shortest path distances between all pairs of vertices in a weighted graph by considering all possible intermediate vertices.
+## Overview
+
+Floyd-Warshall Algorithm finds the shortest path distances between all pairs of vertices in a weighted graph. It uses dynamic programming to consider all possible intermediate vertices, building up the solution incrementally.
+
+Works with:
+- Positive and negative edge weights
+- Directed and undirected graphs
+- Can detect negative cycles
+
+## Algorithm Steps
+
+1. Initialize distance matrix with direct edge weights
+2. Set diagonal to 0 (distance from vertex to itself)
+3. For each intermediate vertex $k$:
+   - For each pair of vertices $(i, j)$:
+     - Update distance if path through $k$ is shorter: $dist[i][j] = \min(dist[i][j], dist[i][k] + dist[k][j])$
+
+## Complexity
+
+- **Time**: $O(V^3)$ - three nested loops over all vertices
+- **Space**: $O(V^2)$ - distance matrix
+
+Where V = number of vertices
+
+## Implementation
+
+### Matrix-Based (Integer Vertices)
 
 ```python
+from math import inf
+
+def floyd_warshall(n: int, edges: list[list[int]]) -> list[list[float]]:
+    """
+    n: number of vertices (0 to n-1)
+    edges: list of [u, v, weight]
+    Returns: distance matrix where dist[i][j] = shortest path from i to j
+    """
+    M = [[inf] * n for _ in range(n)]
+
+    # Distance from vertex to itself is 0
+    for i in range(n):
+        M[i][i] = 0
+
+    # Initialize with direct edges
+    for a, b, w in edges:
+        M[a][b] = w
+
+    # Try all intermediate vertices
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                M[i][j] = min(M[i][j], M[i][k] + M[k][j])
+
+    return M
+```
+
+### Dictionary-Based (String Vertices)
+
+```python
+from collections import defaultdict
+from math import inf
+
 def floyd_warshall(edges: list[tuple[str, str, float]]) -> defaultdict[str, defaultdict[str, float]]:
+    """
+    edges: list of (u, v, weight) tuples
+    Returns: nested dict where G[i][j] = shortest path from i to j
+    """
     G = defaultdict(lambda: defaultdict(lambda: inf))
-    
+
+    vertices = set()
     for a, b, w in edges:
         G[a][b] = w
-    
-    vertices = set()
-    for a, b, _ in edges:
-        vertices.add(a)
-        vertices.add(b)
         G[a][a] = 0
         G[b][b] = 0
-    
+        vertices.add(a)
+        vertices.add(b)
+
     for k in vertices:
         for i in vertices:
             for j in vertices:
                 G[i][j] = min(G[i][j], G[i][k] + G[k][j])
-    
+
     return G
 ```
 
-#### Related Problems
+## Example
+
+```python
+# Graph with 4 vertices
+n = 4
+edges = [
+    [0, 1, 3],
+    [0, 2, 8],
+    [1, 2, 1],
+    [1, 3, 5],
+    [2, 3, 2]
+]
+
+M = floyd_warshall(n, edges)
+# M[0][3] = 6 (path: 0 -> 1 -> 2 -> 3)
+# M[0][2] = 4 (path: 0 -> 1 -> 2)
+```
+
+## Negative Cycle Detection
+
+If $M[i][i] < 0$ after running the algorithm, the graph contains a negative cycle reachable from vertex $i$.
+
+```python
+def has_negative_cycle(M: list[list[float]]) -> bool:
+    n = len(M)
+    return any(M[i][i] < 0 for i in range(n))
+```
+
+## Key Points
+
+- Solves all-pairs shortest path in $O(V^3)$ time
+- Works with negative weights (unlike Dijkstra)
+- Order of loops matters: $k$ must be outermost
+- Use for dense graphs or small $V$ (≤400 vertices)
+- For sparse graphs, run Dijkstra $V$ times instead
+- Detects negative cycles: check if $M[i][i] < 0$
+- DP relation: $M[i][j] = \min(M[i][j], M[i][k] + M[k][j])$
+- Can track paths by storing predecessor matrix
+
+## Related Problems
+
 - [399. Evaluate Division](../leetcode/graph/399.md)

@@ -2,6 +2,30 @@
 title: Union Find
 ---
 
+## Overview
+
+Union Find (also called Disjoint Set Union or DSU) is a data structure that tracks elements partitioned into disjoint sets. It efficiently supports two operations:
+- **Find**: Determine which set an element belongs to
+- **Union**: Merge two sets into one
+
+**Use Cases**: Detecting cycles in graphs, finding connected components, Kruskal's MST algorithm, dynamic connectivity problems.
+
+## Complexity
+
+| Operation | Without Rank | With Rank + Path Compression |
+|-----------|--------------|------------------------------|
+| Find      | $O(n)$ worst | $O(\alpha(n))$ amortized    |
+| Union     | $O(n)$ worst | $O(\alpha(n))$ amortized    |
+
+Where $\alpha(n)$ is the inverse Ackermann function (effectively constant, $\leq 4$ for practical values).
+
+## Optimizations
+
+- **Path Compression**: During `find()`, make nodes point directly to root
+- **Union by Rank**: Attach smaller tree under root of larger tree
+
+## Implementation
+
 <Tabs items={['Without Rank', 'With Rank']}>
 <Tab value="Without Rank">
 ```python
@@ -55,3 +79,53 @@ class UnionFind:
 ```
 </Tab>
 </Tabs>
+
+## Example Usage
+
+```python
+# Initialize with 5 elements (0-4)
+uf = UnionFind(5)
+
+# Union operations
+uf.union(0, 1)  # Connect 0 and 1
+uf.union(1, 2)  # Connect 1 and 2
+uf.union(3, 4)  # Connect 3 and 4
+
+# Find operations
+uf.find(0)  # Returns root of set containing 0
+uf.find(2)  # Returns same root as find(0)
+uf.find(3)  # Returns different root
+
+# Check if connected
+uf.find(0) == uf.find(2)  # True (in same set)
+uf.find(0) == uf.find(3)  # False (different sets)
+```
+
+## Common Patterns
+
+### Cycle Detection
+```python
+def has_cycle(n: int, edges: list[list[int]]) -> bool:
+    uf = UnionFind(n)
+    for u, v in edges:
+        if not uf.union(u, v):  # Already connected
+            return True
+    return False
+```
+
+### Count Components
+```python
+def count_components(n: int, edges: list[list[int]]) -> int:
+    uf = UnionFind(n)
+    for u, v in edges:
+        uf.union(u, v)
+    return len(set(uf.find(i) for i in range(n)))
+```
+
+## Key Points
+
+- Essential for graph connectivity problems
+- Nearly constant time operations with both optimizations
+- `union()` returns `False` if elements already connected (useful for cycle detection)
+- Path compression happens during `find()`, not `union()`
+- Always use "With Rank" version in competitive programming for optimal performance

@@ -6,6 +6,7 @@
     "kadane",
     "floyd",
     "floyd_warshall",
-    "kahn"
+    "kahn",
+    "kruskal"
   ]
 }

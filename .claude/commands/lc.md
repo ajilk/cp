@@ -1,7 +1,7 @@
 ---
 argument-hint: [question/code/link]
 description: Solve LeetCode problems in Python
-allowed-tools: [web_search, web_fetch]
+allowed-tools: [Bash, web_search, web_fetch]
 ---
 
 Solve the LeetCode problem following these requirements:
@@ -11,7 +11,27 @@ Solve the LeetCode problem following these requirements:
 3. **Naming**: Follow conventions in `content/docs/naming.md`
 4. **Assumptions**: All necessary imports are available
 
-**Important**: If the question is unclear, not provided, or only a problem number/name is given, immediately use web search and web fetch to find the complete problem. Do not ask for permission.
+## Fetching Questions
+
+**If the question is unclear, not provided, or only a problem number/name/URL is given:**
+
+1. **First, try the LeetCode fetcher script:**
+   ```bash
+   python3 /Users/ajilk/Documents/git/cp/scripts/fetch-leetcode.py <query>
+   ```
+   - Works with question number (e.g., `1`, `42`)
+   - Works with title slug (e.g., `two-sum`)
+   - Works with URL (e.g., `https://leetcode.com/problems/two-sum/`)
+
+2. **Parse the JSON output** to extract:
+   - `title` - Problem title
+   - `content` - Problem description (HTML, can be parsed naturally)
+   - `difficulty` - Easy/Medium/Hard
+   - `codeSnippets` - Find the Python3 template
+   - `hints` - Official hints (if needed)
+   - `exampleTestcases` - Test cases
+
+3. **If script fails**, fallback to web search and web fetch to find the complete problem.
 
 Example output format:
 ```python
