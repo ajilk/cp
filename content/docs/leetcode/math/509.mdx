@@ -1,0 +1,58 @@
+---
+title: 509. Fibonacci Number
+---
+
+<Tabs items={['Recursive', 'Iterative', 'Math']}>
+<Tab value="Recursive">
+| Metric           | Complexity | Reason                              |
+| ---------------- | ---------- | ----------------------------------- |
+| Time Complexity  | $O(n)$     | Each subproblem computed once       |
+| Space Complexity | $O(n)$     | Cache storage and recursion stack   |
+
+```python
+class Solution:
+    @cache
+    def fib(self, n: int) -> int:
+        if n <= 1:
+            return n
+        return self.fib(n - 1) + self.fib(n - 2)
+```
+</Tab>
+<Tab value="Iterative">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(n)$     | Single loop from 2 to n      |
+| Space Complexity | $O(1)$     | Only constant variables      |
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n <= 1:
+            return n
+
+        prepre, pre = 0, 1
+
+        for i in range(2, n):
+            cur = prepre + pre
+            prepre = pre
+            pre = cur
+
+        return prepre + pre
+```
+</Tab>
+<Tab value="Math">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(1)$     | Direct formula (Binet's)     |
+| Space Complexity | $O(1)$     | Only constant variables      |
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        phi = (1 + 5 ** 0.5) / 2
+        return int(round(phi ** n) / 5 ** 0.5)
+```
+
+See [Binet's Formula](../../misc/binet.md)
+</Tab>
+</Tabs>

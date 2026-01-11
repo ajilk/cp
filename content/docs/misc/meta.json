@@ -2,6 +2,7 @@
   "title": "Miscellaneous",
   "pages": [
     "gauss",
+    "binet",
     "inverse-ackermann"
   ]
 }
