@@ -5,6 +5,7 @@
     "sll",
     "dll",
     "graph",
+    "heap",
     "uf",
     "fenwick_tree",
     "segement_tree",

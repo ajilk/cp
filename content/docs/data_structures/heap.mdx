@@ -1,0 +1,276 @@
+---
+title: Heap
+---
+
+## Overview
+
+A heap is a complete binary tree that satisfies the **heap invariant**. It efficiently supports priority queue operations.
+
+**Heap Invariant**: A structural property that must hold for every node in the tree:
+- **Min Heap**: Every parent is ≤ both children (root is minimum)
+- **Max Heap**: Every parent is ≥ both children (root is maximum)
+
+This invariant is maintained after every operation (insert, extract) through heapify operations.
+
+**Use Cases**: Priority queues, k-th largest/smallest elements, heap sort, median finding, merge k sorted arrays.
+
+## Structure
+
+<div style={{transform: 'scale(1.2)', transformOrigin: 'center', margin: '2rem 0'}}>
+<Mermaid chart={`graph TD
+    A["1 (root)"]
+    B["3"]
+    C["2"]
+    D["7"]
+    E["8"]
+    F["4"]
+    G["5"]
+
+    A --> B
+    A --> C
+    B --> D
+    B --> E
+    C --> F
+    C --> G
+
+    style A fill:#e1f5ff
+    style B fill:#e1f5ff
+    style C fill:#e1f5ff`} />
+</div>
+
+Array representation: `[1, 3, 2, 7, 8, 4, 5]`
+
+For element at index `i`:
+- Parent: `(i - 1) // 2`
+- Left child: `2 * i + 1`
+- Right child: `2 * i + 2`
+
+## Complexity
+
+| Operation | Time Complexity | Space Complexity |
+|-----------|----------------|------------------|
+| insert    | $O(\log n)$    | $O(1)$          |
+| extract   | $O(\log n)$    | $O(1)$          |
+| peek      | $O(1)$         | $O(1)$          |
+| heapify   | $O(n)$         | $O(1)$          |
+
+## Implementation
+
+<Tabs items={['Min Heap', 'Max Heap']}>
+<Tab value="Min Heap">
+```python
+class MinHeap:
+    def __init__(self) -> None:
+        self.heap = []
+
+    def _parent(self, i: int) -> int:
+        return (i - 1) // 2
+
+    def _left_child(self, i: int) -> int:
+        return 2 * i + 1
+
+    def _right_child(self, i: int) -> int:
+        return 2 * i + 2
+
+    def _swap(self, i: int, j: int) -> None:
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+    def _heapify_up(self, i: int) -> None:
+        while i > 0 and self.heap[i] < self.heap[self._parent(i)]:
+            self._swap(i, self._parent(i))
+            i = self._parent(i)
+
+    def _heapify_down(self, i: int) -> None:
+        n = len(self.heap)
+        while True:
+            smallest = i
+            left = self._left_child(i)
+            right = self._right_child(i)
+
+            if left < n and self.heap[left] < self.heap[smallest]:
+                smallest = left
+            if right < n and self.heap[right] < self.heap[smallest]:
+                smallest = right
+
+            if smallest == i:
+                break
+
+            self._swap(i, smallest)
+            i = smallest
+
+    def insert(self, v: int) -> None:
+        self.heap.append(v)
+        self._heapify_up(len(self.heap) - 1)
+
+    def extract(self) -> int | None:
+        if not self.heap:
+            return None
+
+        root = self.heap[0]
+        self.heap[0] = self.heap[-1]
+        self.heap.pop()
+
+        if self.heap:
+            self._heapify_down(0)
+
+        return root
+
+    def peek(self) -> int | None:
+        return self.heap[0] if self.heap else None
+
+    def size(self) -> int:
+        return len(self.heap)
+```
+</Tab>
+<Tab value="Max Heap">
+```python
+class MaxHeap:
+    def __init__(self) -> None:
+        self.heap = []
+
+    def _parent(self, i: int) -> int:
+        return (i - 1) // 2
+
+    def _left_child(self, i: int) -> int:
+        return 2 * i + 1
+
+    def _right_child(self, i: int) -> int:
+        return 2 * i + 2
+
+    def _swap(self, i: int, j: int) -> None:
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+    def _heapify_up(self, i: int) -> None:
+        while i > 0 and self.heap[i] > self.heap[self._parent(i)]:
+            self._swap(i, self._parent(i))
+            i = self._parent(i)
+
+    def _heapify_down(self, i: int) -> None:
+        n = len(self.heap)
+        while True:
+            largest = i
+            left = self._left_child(i)
+            right = self._right_child(i)
+
+            if left < n and self.heap[left] > self.heap[largest]:
+                largest = left
+            if right < n and self.heap[right] > self.heap[largest]:
+                largest = right
+
+            if largest == i:
+                break
+
+            self._swap(i, largest)
+            i = largest
+
+    def insert(self, v: int) -> None:
+        self.heap.append(v)
+        self._heapify_up(len(self.heap) - 1)
+
+    def extract(self) -> int | None:
+        if not self.heap:
+            return None
+
+        root = self.heap[0]
+        self.heap[0] = self.heap[-1]
+        self.heap.pop()
+
+        if self.heap:
+            self._heapify_down(0)
+
+        return root
+
+    def peek(self) -> int | None:
+        return self.heap[0] if self.heap else None
+
+    def size(self) -> int:
+        return len(self.heap)
+```
+</Tab>
+</Tabs>
+
+## Example Usage
+
+```python
+h = MinHeap()
+
+h.insert(5)
+h.insert(3)
+h.insert(7)
+h.insert(1)
+
+h.peek()     # 1
+h.extract()  # 1
+h.extract()  # 3
+h.size()     # 2
+```
+
+## Common Patterns
+
+<Tabs items={['K-th Largest', 'K-th Smallest', 'Merge K Sorted', 'Heap Sort']}>
+<Tab value="K-th Largest">
+```python
+def find_kth_largest(A: list[int], k: int) -> int | None:
+    h = MinHeap()
+    for v in A:
+        h.insert(v)
+        if h.size() > k:
+            h.extract()
+    return h.peek()
+```
+</Tab>
+<Tab value="K-th Smallest">
+```python
+def find_kth_smallest(A: list[int], k: int) -> int | None:
+    h = MaxHeap()
+    for v in A:
+        h.insert(v)
+        if h.size() > k:
+            h.extract()
+    return h.peek()
+```
+</Tab>
+<Tab value="Merge K Sorted">
+```python
+import heapq
+
+def merge_k_sorted(arrays: list[list[int]]) -> list[int]:
+    h = []
+    result = []
+
+    for i, A in enumerate(arrays):
+        if A:
+            heapq.heappush(h, (A[0], i, 0))
+
+    while h:
+        v, array_idx, elem_idx = heapq.heappop(h)
+        result.append(v)
+
+        if elem_idx + 1 < len(arrays[array_idx]):
+            next_v = arrays[array_idx][elem_idx + 1]
+            heapq.heappush(h, (next_v, array_idx, elem_idx + 1))
+
+    return result
+```
+</Tab>
+<Tab value="Heap Sort">
+```python
+def heap_sort(A: list[int]) -> list[int]:
+    h = MinHeap()
+    for v in A:
+        h.insert(v)
+    return [h.extract() for _ in range(h.size())]
+```
+</Tab>
+</Tabs>
+
+## Key Points
+
+- Heap invariant must hold after every operation (maintained by heapify)
+- `_heapify_up()` restores invariant after insertion (bubbles up)
+- `_heapify_down()` restores invariant after extraction (bubbles down)
+- Python's `heapq` module implements min heap by default
+- For max heap in Python: negate values or use `(-v, v)` tuples
+- Building a heap from array: use heapify for $O(n)$ instead of $O(n \log n)$ insertions
+- Complete binary tree property ensures $O(\log n)$ height
+- Use heap for top-k problems with space constraint $O(k)$
