@@ -2,8 +2,13 @@
 title: 695. Max Area of Island
 ---
 
+<Tabs items={['DFS', 'Union Find']}>
+<Tab value="DFS">
+| Metric           | Complexity | Reason                          |
+| ---------------- | ---------- | ------------------------------- |
+| Time Complexity  | $O(m \cdot n)$ | Visit each cell at most once |
+| Space Complexity | $O(m \cdot n)$ | Recursion stack in worst case |
 
-**using DFS**
 ```python
 class Solution:
     def maxAreaOfIsland(self, M: List[List[int]]) -> int:
@@ -16,7 +21,7 @@ class Solution:
                 ny, nx = y + dy, x + dx
                 if 0 <= ny < m and 0 <= nx < n and M[ny][nx] == 1:
                     yield [ny, nx]
-        
+
         def dfs(i: int, j: int) -> None:
             M[i][j] = 0
             area = 1
@@ -28,25 +33,30 @@ class Solution:
             for j in range(n):
                 if M[i][j] == 1:
                     area = max(area, dfs(i, j))
-        
+
         return area
 
 ```
+</Tab>
+<Tab value="Union Find">
+| Metric           | Complexity | Reason                                    |
+| ---------------- | ---------- | ----------------------------------------- |
+| Time Complexity  | $O(m \cdot n \cdot \alpha(m \cdot n))$ | Near-linear with path compression |
+| Space Complexity | $O(m \cdot n)$ | Union Find data structures |
 
-**using Union Find**
 ```python
 class UnionFind:
     def __init__(self, size: int) -> None:
         self.root = list(range(size))
         self.area = [1] * size
-    
+
     def find(self, x: int) -> int:
         rx = self.root[x]
         if rx != x:
             rx = self.find(rx)
             self.root[x] = rx
         return rx
-    
+
     def union(self, x: int, y: int) -> bool:
         rx = self.find(x)
         ry = self.find(y)
@@ -66,7 +76,7 @@ class Solution:
                 ny, nx = y + dy, x + dx
                 if 0 <= ny < m and 0 <= nx < n and M[ny][nx] == 1:
                     yield (ny, nx)
-        
+
         def idx(i: int, j: int) -> int:
             return i * n + j
 
@@ -83,7 +93,9 @@ class Solution:
                 if M[i][j] == 1:
                     rij = uf.find(idx(i, j))
                     area = max(area, uf.area[rij])
-        
+
         return area
 
 ```
+</Tab>
+</Tabs>
