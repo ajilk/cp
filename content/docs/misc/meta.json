@@ -3,6 +3,7 @@
   "pages": [
     "gauss",
     "binet",
+    "sieve",
     "inverse-ackermann"
   ]
 }

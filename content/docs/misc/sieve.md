@@ -1,0 +1,66 @@
+---
+title: Sieve of Eratosthenes
+---
+
+An ancient algorithm for finding all prime numbers up to a given limit $n$.
+
+## Algorithm
+
+1. Create a boolean array of size $n$, initially all `True`
+2. Mark 0 and 1 as not prime
+3. For each number $i$ from 2 to $\sqrt{n}$:
+   - If $i$ is still marked prime, mark all multiples of $i$ (starting from $i^2$) as not prime
+4. All indices still marked `True` are prime
+
+## Why Start from $i^2$?
+
+When marking multiples of $i$, all multiples less than $i^2$ have already been marked by smaller primes:
+- $2i$ marked by 2
+- $3i$ marked by 3
+- ...
+- $(i-1) \cdot i$ marked by some prime factor of $(i-1)$
+
+## Time Complexity
+
+$$\Large O(n \log \log n)$$
+
+**Derivation**: The inner loop runs $\frac{n}{p}$ times for each prime $p$. Total work:
+
+$$\sum_{p \leq n} \frac{n}{p} = n \sum_{p \leq n} \frac{1}{p} \approx n \log \log n$$
+
+The sum of reciprocals of primes grows as $\log \log n$ (Meissel-Mertens constant).
+
+## Space Complexity
+
+$$O(n)$$
+
+Boolean array to track primality.
+
+## Implementation
+
+```python
+def sieve(n: int) -> list[bool]:
+    if n < 2:
+        return [False] * n
+
+    prime = [True] * n
+    prime[0] = prime[1] = False
+
+    for i in range(2, int(n ** 0.5) + 1):
+        if prime[i]:
+            for j in range(i * i, n, i):
+                prime[j] = False
+
+    return prime
+```
+
+## Optimizations
+
+**Skip even numbers**: Only store odd numbers, halving space.
+
+**Segmented sieve**: Process in blocks for cache efficiency and to handle larger ranges.
+
+**Wheel factorization**: Skip multiples of small primes (2, 3, 5) during iteration.
+
+#### Related Problems
+- [204. Count Primes](../leetcode/math/204.mdx)
