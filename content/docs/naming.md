@@ -37,6 +37,7 @@ Below is the naming convention I use for commonly used variables
 |         `left`, `right` | left and right pointers                           |
 |                   `mid` | middle                                            |
 |      `prefix`, `suffix` | prefix/suffix sum/product or values               |
+|  `max_sum`, `cur_sum`   | maximum sum, current sum (e.g., Kadane's)         |
 | `head`, `tail`, `dummy` | pointer to a list node                            |
 |                   `tmp` | temporary variable                                |
 |                     `c` | character in string                               |

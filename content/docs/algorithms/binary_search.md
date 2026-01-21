@@ -2,6 +2,22 @@
 title: Binary Search
 ---
 
+## Overview
+
+Binary Search is an efficient search algorithm that finds a target value within a sorted array. It works by repeatedly dividing the search space in half, eliminating half of the remaining elements with each comparison.
+
+**Key Requirement**: The array must be sorted for binary search to work correctly.
+
+## Algorithm Steps
+
+1. Initialize two pointers: `left` at start, `right` at end of array
+2. While `left <= right`:
+   - Calculate `mid` as the middle index
+   - If `A[mid] == target`, return `mid`
+   - If `A[mid] < target`, search right half (`left = mid + 1`)
+   - If `A[mid] > target`, search left half (`right = mid - 1`)
+3. If not found, return `-1`
+
 ## Complexity
 
 | Metric           | Complexity   | Reason                          |
@@ -12,12 +28,11 @@ title: Binary Search
 ## Implementation
 
 ```python
-def bs(A: List[int], target: int) -> None:
-    n = len(A)
-    left, right = 0, n - 1
+def bs(A: List[int], target: int) -> int:
+    left, right = 0, len(A) - 1
 
     while left <= right:
-        mid = left + (right - left) // 2
+        mid = left + (right - left) // 2  # Avoids overflow
         if A[mid] < target:
             left = mid + 1
         elif A[mid] > target:
@@ -26,9 +41,28 @@ def bs(A: List[int], target: int) -> None:
             return mid
 
     return -1
-
 ```
 
-#### Related Problems
+## Example
+
+```python
+A = [1, 3, 5, 7, 9, 11, 13]
+target = 7
+
+# Step 1: left=0, right=6, mid=3, A[3]=7 == target
+# Found at index 3
+
+result = bs(A, 7)  # Returns 3
+result = bs(A, 4)  # Returns -1 (not found)
+```
+
+## Key Points
+
+- Requires sorted array as a precondition
+- Use `left + (right - left) // 2` instead of `(left + right) // 2` to avoid integer overflow
+- `left <= right` includes the case where the search space is a single element
+- Can be adapted for finding insertion points, first/last occurrence, or boundary conditions
+
+## Related Problems
 
 - [33. Search in Rotated Sorted Array](../leetcode/array/33.mdx)
