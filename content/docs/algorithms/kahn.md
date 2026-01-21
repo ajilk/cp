@@ -21,8 +21,10 @@ Kahn's Algorithm performs topological sorting on a Directed Acyclic Graph (DAG) 
 
 ## Complexity
 
-- **Time**: $O(V + E)$ - visits each vertex and edge once
-- **Space**: $O(V)$ - for in-degree array and queue
+| Metric           | Complexity | Reason                           |
+| ---------------- | ---------- | -------------------------------- |
+| Time Complexity  | $O(V + E)$ | Visits each vertex and edge once |
+| Space Complexity | $O(V)$     | In-degree array and queue        |
 
 Where V = number of vertices, E = number of edges
 

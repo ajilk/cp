@@ -2,6 +2,14 @@
 title: Binary Search
 ---
 
+## Complexity
+
+| Metric           | Complexity   | Reason                          |
+| ---------------- | ------------ | ------------------------------- |
+| Time Complexity  | $O(\log n)$  | Halves search space each step   |
+| Space Complexity | $O(1)$       | Only uses constant variables    |
+
+## Implementation
 
 ```python
 def bs(A: List[int], target: int) -> None:

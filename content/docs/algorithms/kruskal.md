@@ -19,8 +19,10 @@ Kruskal's Algorithm is a greedy algorithm that finds a Minimum Spanning Tree (MS
 
 ## Complexity
 
-- **Time**: $O(E \log E)$ or $O(E \log V)$ - dominated by sorting edges
-- **Space**: $O(V)$ - for Union-Find structure
+| Metric           | Complexity      | Reason                    |
+| ---------------- | --------------- | ------------------------- |
+| Time Complexity  | $O(E \log E)$   | Dominated by sorting edges |
+| Space Complexity | $O(V)$          | Union-Find structure      |
 
 Where E = number of edges, V = number of vertices
 

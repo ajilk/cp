@@ -21,8 +21,10 @@ Works with:
 
 ## Complexity
 
-- **Time**: $O(V^3)$ - three nested loops over all vertices
-- **Space**: $O(V^2)$ - distance matrix
+| Metric           | Complexity | Reason                              |
+| ---------------- | ---------- | ----------------------------------- |
+| Time Complexity  | $O(V^3)$   | Three nested loops over all vertices |
+| Space Complexity | $O(V^2)$   | Distance matrix storage             |
 
 Where V = number of vertices
 
