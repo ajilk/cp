@@ -1,0 +1,53 @@
+---
+title: 269. Alien Dictionary
+---
+
+## Algorithm
+
+1. Build adjacency graph with all unique characters
+2. Compare adjacent words to find ordering constraints
+   - If word A is prefix of word B but longer → invalid
+   - First differing char pair gives edge: `c1 → c2`
+3. Track indegree for each character
+4. Topological sort via BFS (Kahn's algorithm)
+5. If result length ≠ total chars → cycle exists → invalid
+
+## Complexity
+
+- **Time**: $O(C)$ where C = total characters across all words
+- **Space**: $O(1)$ or $O(U + min(U^2, N))$ where U = unique chars, N = words
+
+## Code
+
+```python
+class Solution:
+    def alienOrder(self, W: List[str]) -> str:
+        G = {c: set() for w in W for c in w}
+        indegree = {c: 0 for c in G}
+        n = len(W)
+        result = []
+
+        for i in range(n - 1):
+            a, b = W[i], W[i + 1]
+            if len(a) > len(b) and a[:len(b)] == b:
+                return ""
+
+            for c1, c2 in zip(a, b):
+                if c1 != c2:
+                    if c2 not in G[c1]:
+                        G[c1].add(c2)
+                        indegree[c2] += 1
+                    break
+
+        q = deque([c for c in indegree if indegree[c] == 0])
+
+        while q:
+            c = q.popleft()
+            result.append(c)
+            for nei in G[c]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    q.append(nei)
+
+        return "".join(result) if len(result) == len(G) else ""
+```

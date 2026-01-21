@@ -105,3 +105,7 @@ def has_cycle(n: int, edges: list[list[int]]) -> bool:
 - Alternative: DFS-based topological sort (post-order traversal)
 - In-degree tracks number of dependencies for each node
 
+## Related Problems
+
+- [269. Alien Dictionary](../leetcode/graph/269.mdx)
+
