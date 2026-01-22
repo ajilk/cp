@@ -1,0 +1,310 @@
+---
+title: Greedy
+---
+
+## Interview Recognition
+
+**Signals that suggest greedy:**
+
+- "Maximum/minimum number of..." with no explicit DP substructure
+- Intervals, scheduling, or assignment problems
+- Problems where sorting + single pass seems viable
+- "Can you do better than $O(n^2)$?" after DP solution
+
+**Red flags (greedy won't work):**
+
+- Coin change with arbitrary denominations
+- Subset sum / partition problems
+- "Count all ways" or "all possible combinations"
+- Path problems in graphs with negative edges
+
+**Interview tip**: If proposing greedy, briefly explain why the greedy choice is safe. Interviewers often ask "why does greedy work here?"
+
+## Overview
+
+Greedy algorithms build solutions incrementally, making the locally optimal choice at each step. Unlike DP, greedy never reconsiders past decisions.
+
+**Two required properties:**
+
+- **Greedy Choice Property**: A locally optimal choice leads to a globally optimal solution
+- **Optimal Substructure**: An optimal solution contains optimal solutions to subproblems
+
+**Why greedy can fail**: Consider coin change with coins `[1, 3, 4]` and target `6`. Greedy picks `4 + 1 + 1 = 3` coins, but optimal is `3 + 3 = 2` coins. The greedy choice (largest coin) doesn't lead to global optimum.
+
+## Greedy vs Dynamic Programming
+
+| Aspect      | Greedy                         | DP                               |
+| ----------- | ------------------------------ | -------------------------------- |
+| Decision    | Make one choice, move on       | Consider all choices             |
+| Subproblems | Solve one subproblem           | Solve overlapping subproblems    |
+| Optimality  | Must prove greedy choice works | Guaranteed by exhaustive search  |
+| Complexity  | Often $O(n)$ or $O(n \log n)$  | Often $O(n^2)$ or $O(n \cdot W)$ |
+
+**Rule of thumb**: If greedy works, prefer it for simplicity and efficiency. When in doubt, use DP.
+
+## Examples
+
+<Tabs items={['Interval Scheduling', 'Merge Intervals', 'Jump Game', 'Gas Station', 'Task Scheduling', 'Two-City Scheduling']}>
+<Tab value="Interval Scheduling">
+**Problem**: Select maximum number of non-overlapping intervals.
+
+**Why sort by end time?** Choosing the interval that ends earliest leaves maximum room for subsequent intervals. Sorting by start time fails: `[1,10], [2,3], [4,5]` → greedy picks `[1,10]` (1 interval), optimal is `[2,3], [4,5]` (2 intervals).
+
+| Metric | Complexity    | Reason                   |
+| ------ | ------------- | ------------------------ |
+| Time   | $O(n \log n)$ | Sorting dominates        |
+| Space  | $O(1)$        | Only track last end time |
+
+```python
+def max_non_overlapping(I: list[tuple[int, int]]) -> int:
+    if not I:
+        return 0
+
+    I.sort(key=lambda x: x[1])
+    result = 1
+    pe = I[0][1]
+
+    for s, e in I[1:]:
+        if s >= pe:
+            result += 1
+            pe = e
+
+    return result
+```
+
+**Minimum Intervals to Remove**
+
+**Problem**: Remove minimum intervals to make rest non-overlapping.
+
+**Insight**: `removals = total - max_non_overlapping`
+
+```python
+def erase_overlap_intervals(I: list[list[int]]) -> int:
+    if not I:
+        return 0
+
+    I.sort(key=lambda x: x[1])
+    non_overlapping = 1
+    pe = I[0][1]
+
+    for s, e in I[1:]:
+        if s >= pe:
+            non_overlapping += 1
+            pe = e
+
+    return len(I) - non_overlapping
+```
+
+</Tab>
+<Tab value="Merge Intervals">
+**Problem**: Merge all overlapping intervals.
+
+**Strategy**: Sort by start time, extend current interval or start new one.
+
+| Metric | Complexity    | Reason            |
+| ------ | ------------- | ----------------- |
+| Time   | $O(n \log n)$ | Sorting dominates |
+| Space  | $O(n)$        | Result array      |
+
+```python
+def merge(I: list[list[int]]) -> list[list[int]]:
+    if not I:
+        return []
+
+    I.sort(key=lambda x: x[0])
+    result = [I[0]]
+
+    for s, e in I[1:]:
+        if s <= result[-1][1]:
+            result[-1][1] = max(result[-1][1], e)
+        else:
+            result.append([s, e])
+
+    return result
+```
+
+**Key difference from scheduling**: Merge sorts by start (to detect overlaps), scheduling sorts by end (to maximize count).
+
+</Tab>
+<Tab value="Jump Game">
+**Problem**: Given array where `nums[i]` = max jump from index `i`, determine reachability or minimum jumps.
+
+**Can Reach End**
+
+**Insight**: Track farthest reachable index. If current index exceeds it, unreachable.
+
+| Metric | Complexity | Reason       |
+| ------ | ---------- | ------------ |
+| Time   | $O(n)$     | Single pass  |
+| Space  | $O(1)$     | One variable |
+
+```python
+def can_jump(A: list[int]) -> bool:
+    max_reach = 0
+    for i, v in enumerate(A):
+        if i > max_reach:
+            return False
+        max_reach = max(max_reach, i + v)
+    return True
+```
+
+**Minimum Jumps**
+
+**Insight**: Use BFS-like levels. Each "level" = positions reachable with same number of jumps.
+
+```python
+def min_jumps(A: list[int]) -> int:
+    if len(A) <= 1:
+        return 0
+
+    result = 0
+    cur_end = 0
+    farthest = 0
+
+    for i in range(len(A) - 1):
+        farthest = max(farthest, i + A[i])
+        if i == cur_end:
+            result += 1
+            cur_end = farthest
+
+    return result
+```
+
+</Tab>
+<Tab value="Gas Station">
+**Problem**: Find starting gas station to complete circular route, or return -1.
+
+**Key insight**: If total gas >= total cost, solution exists. If we can't reach station `j` from `i`, no station between `i` and `j` works either.
+
+| Metric | Complexity | Reason                 |
+| ------ | ---------- | ---------------------- |
+| Time   | $O(n)$     | Single pass            |
+| Space  | $O(1)$     | Track tank and deficit |
+
+```python
+def can_complete_circuit(gas: list[int], cost: list[int]) -> int:
+    total_tank = 0
+    current_tank = 0
+    start = 0
+
+    for i in range(len(gas)):
+        total_tank += gas[i] - cost[i]
+        current_tank += gas[i] - cost[i]
+
+        if current_tank < 0:
+            start = i + 1
+            current_tank = 0
+
+    return start if total_tank >= 0 else -1
+```
+
+</Tab>
+<Tab value="Task Scheduling">
+**By Deadline (Minimize Lateness)**
+
+**Problem**: Schedule tasks with durations and deadlines to minimize maximum lateness.
+
+**Strategy**: Sort by deadline (Earliest Deadline First).
+
+```python
+def min_lateness(tasks: list[tuple[int, int]]) -> int:
+    tasks.sort(key=lambda x: x[1])
+
+    time = 0
+    max_lateness = 0
+
+    for duration, deadline in tasks:
+        time += duration
+        lateness = max(0, time - deadline)
+        max_lateness = max(max_lateness, lateness)
+
+    return max_lateness
+```
+
+**By Duration (Minimize Wait Time)**
+
+**Problem**: Minimize total waiting time for all tasks.
+
+**Strategy**: Sort by duration (Shortest Job First).
+
+```python
+def min_total_wait(durations: list[int]) -> int:
+    durations.sort()
+    total_wait = 0
+    current_time = 0
+
+    for d in durations:
+        total_wait += current_time
+        current_time += d
+
+    return total_wait
+```
+
+</Tab>
+<Tab value="Two-City Scheduling">
+**Problem**: Send `n` people to city A and `n` to city B, minimizing total cost.
+
+**Insight**: Calculate cost difference `cost_A - cost_B` for each person. Send people with lowest difference to A (they "prefer" A most relative to B).
+
+| Metric | Complexity    | Reason        |
+| ------ | ------------- | ------------- |
+| Time   | $O(n \log n)$ | Sorting       |
+| Space  | $O(1)$        | Sort in place |
+
+```python
+def two_city_sched_cost(costs: list[list[int]]) -> int:
+    n = len(costs) // 2
+    costs.sort(key=lambda x: x[0] - x[1])
+
+    total = 0
+    for i in range(n):
+        total += costs[i][0]
+        total += costs[i + n][1]
+
+    return total
+```
+
+</Tab>
+</Tabs>
+
+## Proving Greedy Correctness
+
+### Exchange Argument
+
+Show that swapping any choice with the greedy choice doesn't improve the solution.
+
+**Example (Interval Scheduling)**: Suppose optimal solution picks interval $I$ instead of greedy choice $G$ (which ends earlier). Replace $I$ with $G$. Since $G$ ends earlier, it can't conflict with more intervals than $I$. Solution is still valid and same size.
+
+### Greedy Stays Ahead
+
+Show greedy solution is at least as good as any other solution at each step.
+
+**Example (Jump Game)**: At each position, greedy tracks maximum reachable index. Any valid path must stay within this bound, so if greedy can't reach the end, nothing can.
+
+## Common Greedy Patterns Summary
+
+| Problem Type                  | Greedy Strategy         | Sort By             |
+| ----------------------------- | ----------------------- | ------------------- |
+| Max non-overlapping intervals | Pick earliest ending    | End time            |
+| Merge intervals               | Extend or start new     | Start time          |
+| Minimize lateness             | Earliest deadline first | Deadline            |
+| Minimize wait time            | Shortest job first      | Duration            |
+| Huffman coding                | Merge two smallest      | Frequency           |
+| Assignment problems           | Cost difference         | Relative preference |
+
+## Common Edge Cases
+
+| Pattern     | Edge Cases to Handle                                           |
+| ----------- | -------------------------------------------------------------- |
+| Intervals   | Empty input, single interval, all overlapping, all disjoint    |
+| Jump Game   | Single element (already at end), first element is 0, all zeros |
+| Gas Station | Single station, exact balance (total gas = total cost)         |
+| Scheduling  | Tasks with same deadline/duration, zero-duration tasks         |
+
+## Related Problems
+
+- [55. Jump Game](../leetcode/array/55.md) - greedy reachability
+- [45. Jump Game II](../leetcode/array/45.md) - minimum jumps (BFS-style greedy)
+- [56. Merge Intervals](../leetcode/array/56.md) - merge overlapping
+- [435. Non-overlapping Intervals](../leetcode/array/435.md) - minimum removals
+- [134. Gas Station](../leetcode/array/134.md) - circular greedy
