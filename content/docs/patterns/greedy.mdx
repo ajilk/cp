@@ -50,10 +50,10 @@ Greedy algorithms build solutions incrementally, making the locally optimal choi
 
 **Why sort by end time?** Choosing the interval that ends earliest leaves maximum room for subsequent intervals. Sorting by start time fails: `[1,10], [2,3], [4,5]` → greedy picks `[1,10]` (1 interval), optimal is `[2,3], [4,5]` (2 intervals).
 
-| Metric | Complexity    | Reason                   |
-| ------ | ------------- | ------------------------ |
-| Time   | $O(n \log n)$ | Sorting dominates        |
-| Space  | $O(1)$        | Only track last end time |
+| Metric | Complexity    | Reason                    |
+| ------ | ------------- | ------------------------- |
+| Time   | $O(n \log n)$ | Sorting dominates         |
+| Space  | $O(n)$        | Timsort auxiliary storage |
 
 ```python
 def max_non_overlapping(I: list[tuple[int, int]]) -> int:
@@ -78,6 +78,11 @@ def max_non_overlapping(I: list[tuple[int, int]]) -> int:
 
 **Insight**: `removals = total - max_non_overlapping`
 
+| Metric | Complexity    | Reason                    |
+| ------ | ------------- | ------------------------- |
+| Time   | $O(n \log n)$ | Sorting dominates         |
+| Space  | $O(n)$        | Timsort auxiliary storage |
+
 ```python
 def erase_overlap_intervals(I: list[list[int]]) -> int:
     if not I:
@@ -101,10 +106,10 @@ def erase_overlap_intervals(I: list[list[int]]) -> int:
 
 **Strategy**: Sort by start time, extend current interval or start new one.
 
-| Metric | Complexity    | Reason            |
-| ------ | ------------- | ----------------- |
-| Time   | $O(n \log n)$ | Sorting dominates |
-| Space  | $O(n)$        | Result array      |
+| Metric | Complexity    | Reason                    |
+| ------ | ------------- | ------------------------- |
+| Time   | $O(n \log n)$ | Sorting dominates         |
+| Space  | $O(n)$        | Timsort auxiliary storage |
 
 ```python
 def merge(I: list[list[int]]) -> list[list[int]]:
@@ -149,6 +154,11 @@ def can_jump(A: list[int]) -> bool:
 **Minimum Jumps**
 
 **Insight**: Use BFS-like levels. Each "level" = positions reachable with same number of jumps.
+
+| Metric | Complexity | Reason              |
+| ------ | ---------- | ------------------- |
+| Time   | $O(n)$     | Single pass         |
+| Space  | $O(1)$     | Three scalar values |
 
 ```python
 def min_jumps(A: list[int]) -> int:
@@ -204,6 +214,11 @@ def can_complete_circuit(gas: list[int], cost: list[int]) -> int:
 
 **Strategy**: Sort by deadline (Earliest Deadline First).
 
+| Metric | Complexity    | Reason                    |
+| ------ | ------------- | ------------------------- |
+| Time   | $O(n \log n)$ | Sorting dominates         |
+| Space  | $O(n)$        | Timsort auxiliary storage |
+
 ```python
 def min_lateness(tasks: list[tuple[int, int]]) -> int:
     tasks.sort(key=lambda x: x[1])
@@ -225,6 +240,11 @@ def min_lateness(tasks: list[tuple[int, int]]) -> int:
 
 **Strategy**: Sort by duration (Shortest Job First).
 
+| Metric | Complexity    | Reason                    |
+| ------ | ------------- | ------------------------- |
+| Time   | $O(n \log n)$ | Sorting dominates         |
+| Space  | $O(n)$        | Timsort auxiliary storage |
+
 ```python
 def min_total_wait(durations: list[int]) -> int:
     durations.sort()
@@ -244,10 +264,10 @@ def min_total_wait(durations: list[int]) -> int:
 
 **Insight**: Calculate cost difference `cost_A - cost_B` for each person. Send people with lowest difference to A (they "prefer" A most relative to B).
 
-| Metric | Complexity    | Reason        |
-| ------ | ------------- | ------------- |
-| Time   | $O(n \log n)$ | Sorting       |
-| Space  | $O(1)$        | Sort in place |
+| Metric | Complexity    | Reason                    |
+| ------ | ------------- | ------------------------- |
+| Time   | $O(n \log n)$ | Sorting dominates         |
+| Space  | $O(n)$        | Timsort auxiliary storage |
 
 ```python
 def two_city_sched_cost(costs: list[list[int]]) -> int:

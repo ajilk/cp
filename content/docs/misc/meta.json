@@ -1,6 +1,7 @@
 {
   "title": "Miscellaneous",
   "pages": [
+    "complexity",
     "gauss",
     "binet",
     "sieve",
