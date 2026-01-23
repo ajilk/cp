@@ -2,7 +2,9 @@
   "title": "Algorithms",
   "icon": "Binary",
   "pages": [
+    "bellman_ford",
     "binary_search",
+    "dijkstra",
     "kadane",
     "floyd",
     "floyd_warshall",

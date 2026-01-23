@@ -1,0 +1,114 @@
+---
+title: Bellman-Ford Algorithm
+---
+
+## Overview
+
+Bellman-Ford Algorithm finds the shortest path from a source vertex to all other vertices in a weighted graph, including graphs with negative edge weights.
+
+**Core Insight**: The shortest path between any two vertices has at most V-1 edges. By relaxing all edges V-1 times, we guarantee finding the shortest paths.
+
+## Algorithm Steps
+
+1. Initialize distances: `D[source] = 0`, all others = `inf`
+2. Repeat V-1 times:
+   - For each edge `(u, v, w)`:
+     - If `D[u] + w < D[v]`, update `D[v] = D[u] + w`
+3. Return distances array
+
+## Complexity
+
+| Metric           | Complexity  | Reason                              |
+| ---------------- | ----------- | ----------------------------------- |
+| Time Complexity  | $O(V × E)$  | V-1 iterations, each relaxing E edges |
+| Space Complexity | $O(V)$      | Distance array                      |
+
+Where V = vertices, E = edges
+
+## Implementation
+
+```python
+def bellman_ford(edges: list[tuple[int, int, int]], n: int, source: int) -> list[float]:
+    D = [inf] * n
+    D[source] = 0
+
+    for _ in range(n - 1):
+        for u, v, w in edges:
+            if D[u] + w < D[v]:
+                D[v] = D[u] + w
+
+    return D
+```
+
+## Example
+
+<div style={{transform: 'scale(1.2)', transformOrigin: 'center', margin: '2rem 0'}}>
+<Mermaid chart={`graph LR
+    A((0)) -->|4| B((1))
+    A -->|5| C((2))
+    B -->|"-3"| C
+    C -->|2| D((3))
+
+    style A fill:#555,stroke:none,color:#fff`} />
+</div>
+
+**Finding shortest paths from vertex 0:**
+
+```python
+edges = [
+    (0, 1, 4),
+    (0, 2, 5),
+    (1, 2, -3),
+    (2, 3, 2)
+]
+
+# Walk through (n=4, so 3 iterations):
+# Iteration 1:
+#   Edge (0,1,4): D[1] = 0+4 = 4
+#   Edge (0,2,5): D[2] = 0+5 = 5
+#   Edge (1,2,-3): D[2] = 4+(-3) = 1
+#   Edge (2,3,2): D[3] = 1+2 = 3
+# Iteration 2: no changes
+# Iteration 3: no changes
+
+D = bellman_ford(edges, 4, 0)  # [0, 4, 1, 3]
+# Shortest paths: 0->0=0, 0->1=4, 0->2=1 (via 0->1->2), 0->3=3
+```
+
+## Negative Cycle Detection
+
+A negative cycle exists if any edge can still be relaxed after V-1 iterations. Add an extra iteration to detect:
+
+```python
+def bellman_ford_with_cycle_detection(
+    edges: list[tuple[int, int, int]], n: int, source: int
+) -> list[float] | None:
+    D = [inf] * n
+    D[source] = 0
+
+    for _ in range(n - 1):
+        for u, v, w in edges:
+            if D[u] + w < D[v]:
+                D[v] = D[u] + w
+
+    # Check for negative cycle
+    for u, v, w in edges:
+        if D[u] + w < D[v]:
+            return None  # Negative cycle detected
+
+    return D
+```
+
+## Key Points
+
+- Handles negative edge weights (unlike Dijkstra)
+- Can detect negative cycles
+- Slower than Dijkstra: $O(V × E)$ vs $O((V + E) \log V)$
+- Use Dijkstra when all weights are non-negative
+- Early termination: if no updates in an iteration, algorithm can stop
+- Can reconstruct paths by tracking predecessors in a `parent` array
+
+## Related Problems
+
+- [743. Network Delay Time](../leetcode/graph/743.md)
+- [787. Cheapest Flights Within K Stops](../leetcode/graph/787.md)

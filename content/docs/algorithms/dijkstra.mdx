@@ -1,0 +1,106 @@
+---
+title: Dijkstra's Algorithm
+---
+
+## Overview
+
+Dijkstra's Algorithm finds the shortest path from a source vertex to all other vertices in a weighted graph with non-negative edge weights.
+
+**Core Insight**: Greedily expand the shortest known path first. Once a vertex is finalized (popped from the priority queue), its shortest distance is guaranteed.
+
+## Algorithm Steps
+
+1. Initialize distances: `D[source] = 0`, all others = `inf`
+2. Push `(0, source)` onto a min-heap
+3. While heap is not empty:
+   - Pop vertex `u` with minimum distance
+   - Skip if already visited
+   - Mark `u` as visited
+   - For each neighbor `v` with edge weight `w`:
+     - If `D[u] + w < D[v]`, update `D[v]` and push `(D[v], v)`
+4. Return distances array
+
+## Complexity
+
+| Metric           | Complexity          | Reason                                           |
+| ---------------- | ------------------- | ------------------------------------------------ |
+| Time Complexity  | $O((V + E) \log V)$ | Each vertex/edge processed once, heap operations |
+| Space Complexity | $O(V)$              | Distance array and visited set                   |
+
+Where V = vertices, E = edges
+
+## Implementation
+
+```python
+def dijkstra(edges: list[tuple[int, int, int]], n: int, source: int) -> list[float]:
+    G = defaultdict(list)
+    for u, v, w in edges:
+        G[u].append((v, w))
+
+    D = [inf] * n
+    D[source] = 0
+    visited = set()
+    heap = [(0, source)]
+
+    while heap:
+        d, u = heappop(heap)
+        if u in visited:
+            continue
+        visited.add(u)
+
+        for v, w in G[u]:
+            if D[u] + w < D[v]:
+                D[v] = D[u] + w
+                heappush(heap, (D[v], v))
+
+    return D
+```
+
+## Example
+
+<div style={{transform: 'scale(1.2)', transformOrigin: 'center', margin: '2rem 0'}}>
+<Mermaid chart={`graph LR
+    A((0)) -->|4| B((1))
+    A -->|1| C((2))
+    C -->|2| B
+    B -->|5| D((3))
+    C -->|8| D
+    B -->|1| E((4))
+    E -->|3| D
+
+    style A fill:#555,stroke:none,color:#fff`} />
+</div>
+
+**Finding shortest paths from vertex 0:**
+
+```python
+edges = [
+    (0, 1, 4), (0, 2, 1),
+    (1, 3, 5), (1, 4, 1),
+    (2, 1, 2), (2, 3, 8),
+    (4, 3, 3)
+]
+
+# Walk through:
+# Pop (0, 0): visit 0, update D[1]=4, D[2]=1
+# Pop (1, 2): visit 2, update D[1]=3 (1+2 < 4)
+# Pop (3, 1): visit 1, update D[3]=8, D[4]=4
+# Pop (4, 4): visit 4, update D[3]=7 (4+3 < 8)
+# Pop (7, 3): visit 3
+# Pop (8, 3): skip (already visited)
+
+D = dijkstra(edges, 5, 0)  # [0, 3, 1, 7, 4]
+# Shortest paths: 0->0=0, 0->1=3, 0->2=1, 0->3=7, 0->4=4
+```
+
+## Key Points
+
+- Only works with non-negative edge weights (use Bellman-Ford for negative weights)
+- Greedy algorithm: always process the closest unvisited vertex
+- Lazy deletion: may push duplicate entries to heap, skip visited vertices when popped
+- Can reconstruct paths by tracking predecessors in a `parent` array
+- For dense graphs, $O(V^2)$ array-based implementation may outperform heap-based
+
+## Related Problems
+
+- [743. Network Delay Time](../leetcode/graph/743.md)

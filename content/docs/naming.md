@@ -28,6 +28,7 @@ Below is the naming convention I use for commonly used variables
 |                     `#` | character used to mark visited elements in matrix |
 |               `offsets` | stores changes in (dy, dx)                        |
 |                     `G` | graph                                             |
+|                     `D` | distances array (shortest path)                   |
 |                `a`, `b` | edge a and b                                      |
 |                   `nei` | neighbor of a graph node                          |
 |                     `q` | queue                                             |
