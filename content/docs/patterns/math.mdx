@@ -1,0 +1,347 @@
+---
+title: Math
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+## Interview Recognition
+
+**Use bitwise when you see:**
+
+- "appears once while others appear twice/k times"
+- "power of 2" or "power of 4"
+- counting bits, parity checks
+- subset enumeration
+- space optimization (bit flags)
+
+**Skip bitwise when:**
+
+- actual arithmetic needed (sums, products)
+- floating point involved
+- problem is about digit manipulation (use `% 10`)
+
+---
+
+## Bitwise Operations
+
+### AND (`&`)
+
+Returns 1 only when both bits are 1.
+
+| A   | B   | A & B |
+| --- | --- | ----- |
+| 0   | 0   | 0     |
+| 0   | 1   | 0     |
+| 1   | 0   | 0     |
+| 1   | 1   | 1     |
+
+**Properties:**
+
+- `a & 0 = 0` — zeroing
+- `a & a = a` — idempotent
+- `a & 1 = a` (last bit) — masking
+
+**Common uses:** Check if bit is set, clear bits, masking
+
+### OR (`|`)
+
+Returns 1 when at least one bit is 1.
+
+| A   | B   | A \| B |
+| --- | --- | ------ |
+| 0   | 0   | 0      |
+| 0   | 1   | 1      |
+| 1   | 0   | 1      |
+| 1   | 1   | 1      |
+
+**Properties:**
+
+- `a | 0 = a` — identity
+- `a | a = a` — idempotent
+- `a | ~0 = ~0` — all ones
+
+**Common uses:** Set bits, combine flags
+
+### XOR (`^`)
+
+Returns 1 when bits differ.
+
+| A   | B   | A ^ B |
+| --- | --- | ----- |
+| 0   | 0   | 0     |
+| 0   | 1   | 1     |
+| 1   | 0   | 1     |
+| 1   | 1   | 0     |
+
+**Example:** `5 ^ 3`
+
+```
+  5 = 101
+  3 = 011
+---------
+  6 = 110
+```
+
+**Properties:**
+
+- `a ^ a = 0` — self-cancellation
+- `a ^ 0 = a` — identity
+- `a ^ b = b ^ a` — commutative
+- `(a ^ b) ^ c = a ^ (b ^ c)` — associative
+
+**Common uses:** Find unique element, swap without temp, toggle bits
+
+### NOT (`~`)
+
+Flips all bits (one's complement).
+
+| A   | ~A  |
+| --- | --- |
+| 0   | 1   |
+| 1   | 0   |
+
+**Key insight (two's complement):**
+
+```
+~n = -n - 1
+```
+
+So `~5 = -6` and `~(-3) = 2`
+
+### Left Shift (`<<`)
+
+Shifts bits left, fills with 0s. Equivalent to multiply by $2^k$.
+
+```
+5 << 1 = 10    (101 → 1010)
+5 << 2 = 20    (101 → 10100)
+```
+
+**Use:** `1 << k` creates a mask with only bit k set.
+
+### Right Shift (`>>`)
+
+Shifts bits right. Equivalent to integer divide by $2^k$.
+
+```
+20 >> 1 = 10   (10100 → 1010)
+20 >> 2 = 5    (10100 → 101)
+```
+
+**Note:** Python uses arithmetic shift (preserves sign for negatives).
+
+---
+
+## Two's Complement
+
+How computers represent negative integers:
+
+- `-n = ~n + 1` (flip bits, add 1)
+- Range for k bits: $[-2^{k-1}, 2^{k-1}-1]$
+
+**Why this matters:**
+
+```python
+n & -n    # isolates rightmost set bit
+n & (n-1) # clears rightmost set bit
+```
+
+Example: `n = 12` (binary: `1100`)
+
+```
+  n   = 01100
+ -n   = 10100  (two's complement)
+n & -n = 00100  (rightmost set bit isolated)
+```
+
+---
+
+## Core Patterns
+
+<Tabs items={['Get/Set/Clear Bit', 'Rightmost Bit', 'Count Bits', 'Power of 2', 'Find Unique', 'Subset Enumeration']}>
+
+<Tab value="Get/Set/Clear Bit">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(1)$     | Single bitwise operation     |
+| Space Complexity | $O(1)$     | No extra space               |
+
+```python
+def get_bit(n: int, k: int) -> int:
+    return (n >> k) & 1
+
+def set_bit(n: int, k: int) -> int:
+    return n | (1 << k)
+
+def clear_bit(n: int, k: int) -> int:
+    return n & ~(1 << k)
+
+def toggle_bit(n: int, k: int) -> int:
+    return n ^ (1 << k)
+```
+
+</Tab>
+
+<Tab value="Rightmost Bit">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(1)$     | Single bitwise operation     |
+| Space Complexity | $O(1)$     | No extra space               |
+
+```python
+def isolate_rightmost_set_bit(n: int) -> int:
+    return n & -n
+
+def clear_rightmost_set_bit(n: int) -> int:
+    return n & (n - 1)
+
+def isolate_rightmost_zero_bit(n: int) -> int:
+    return ~n & (n + 1)
+```
+
+**Example:** `n = 12` (`1100`)
+
+- `n & -n = 4` (`0100`) — rightmost set bit
+- `n & (n-1) = 8` (`1000`) — cleared rightmost
+
+</Tab>
+
+<Tab value="Count Bits">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(k)$     | k = number of set bits       |
+| Space Complexity | $O(1)$     | No extra space               |
+
+**Brian Kernighan's Algorithm:**
+
+```python
+def count_bits(n: int) -> int:
+    count = 0
+    while n:
+        n &= n - 1
+        count += 1
+    return count
+```
+
+**Why it's fast:** Only iterates once per set bit, not once per total bit.
+
+**Built-in alternative:** `bin(n).count('1')` or `n.bit_count()` (Python 3.10+)
+
+</Tab>
+
+<Tab value="Power of 2">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(1)$     | Single bitwise operation     |
+| Space Complexity | $O(1)$     | No extra space               |
+
+```python
+def is_power_of_two(n: int) -> bool:
+    return n > 0 and (n & (n - 1)) == 0
+
+def is_power_of_four(n: int) -> bool:
+    return n > 0 and (n & (n - 1)) == 0 and (n & 0xAAAAAAAA) == 0
+
+def next_power_of_two(n: int) -> int:
+    if n <= 0:
+        return 1
+    return 1 << (n - 1).bit_length()
+```
+
+**Why `0xAAAAAAAA`?** Binary: `1010...1010` — masks odd positions. Power of 4 must be at even position.
+
+</Tab>
+
+<Tab value="Find Unique">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(n)$     | Single pass through array    |
+| Space Complexity | $O(1)$     | Only uses constant variables |
+
+**Single unique (others appear twice):**
+
+```python
+def single_number(A: list[int]) -> int:
+    result = 0
+    for v in A:
+        result ^= v
+    return result
+```
+
+**Two unique numbers (others appear twice):**
+
+```python
+def single_number_iii(A: list[int]) -> list[int]:
+    xor_all = 0
+    for v in A:
+        xor_all ^= v
+
+    diff_bit = xor_all & -xor_all
+
+    a = 0
+    for v in A:
+        if v & diff_bit:
+            a ^= v
+
+    return [a, xor_all ^ a]
+```
+
+</Tab>
+
+<Tab value="Subset Enumeration">
+| Metric           | Complexity | Reason                       |
+| ---------------- | ---------- | ---------------------------- |
+| Time Complexity  | $O(2^n)$   | All subsets                  |
+| Space Complexity | $O(1)$     | Per subset (excluding output)|
+
+```python
+def all_subsets(A: list[int]) -> list[list[int]]:
+    n = len(A)
+    result = []
+    for mask in range(1 << n):
+        subset = []
+        for i in range(n):
+            if mask & (1 << i):
+                subset.append(A[i])
+        result.append(subset)
+    return result
+
+def subsets_of_mask(mask: int):
+    sub = mask
+    while sub:
+        yield sub
+        sub = (sub - 1) & mask
+    yield 0
+```
+
+**Use case:** DP with bitmask states, combinatorial problems.
+
+</Tab>
+
+</Tabs>
+
+---
+
+## Quick Reference
+
+| Pattern              | Code             | Use Case               |
+| -------------------- | ---------------- | ---------------------- |
+| Check bit k          | `(n >> k) & 1`   | Test specific bit      |
+| Set bit k            | `n \| (1 << k)`  | Turn on bit            |
+| Clear bit k          | `n & ~(1 << k)`  | Turn off bit           |
+| Toggle bit k         | `n ^ (1 << k)`   | Flip bit               |
+| Rightmost set bit    | `n & -n`         | Isolate lowest 1       |
+| Clear rightmost 1    | `n & (n-1)`      | Count bits, power of 2 |
+| Check power of 2     | `n & (n-1) == 0` | Single bit check       |
+| All 1s mask (k bits) | `(1 << k) - 1`   | Masking lower k bits   |
+
+---
+
+## Related Problems
+
+- [136. Single Number](https://leetcode.com/problems/single-number/) — XOR all elements
+- [137. Single Number II](https://leetcode.com/problems/single-number-ii/) — bit counting (every bit position)
+- [191. Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/) — Brian Kernighan
+- [260. Single Number III](https://leetcode.com/problems/single-number-iii/) — XOR + rightmost bit partition
+- [338. Counting Bits](https://leetcode.com/problems/counting-bits/) — DP with `n & (n-1)`
+- [342. Power of Four](https://leetcode.com/problems/power-of-four/) — power of 2 + position check
