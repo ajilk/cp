@@ -9,9 +9,9 @@ occurrences of a pattern in a text in linear time. Unlike naive matching which
 restarts from scratch after each mismatch, KMP uses information about previously
 matched characters to skip redundant comparisons.
 
-**Core Insight**: When a mismatch occurs after matching some characters, the
-pattern itself contains enough information to determine where the next match
-could begin, avoiding re-examination of previously matched characters.
+<Callout title="Core Insight" type="idea">
+When a mismatch occurs after matching some characters, the pattern itself contains enough information to determine where the next match could begin, avoiding re-examination of previously matched characters.
+</Callout>
 
 ## Algorithm Steps
 

@@ -8,8 +8,9 @@ Rabin-Karp is a string matching algorithm that uses hashing to find pattern
 occurrences in text. Instead of comparing characters directly, it compares
 hash values of the pattern with hash values of text substrings.
 
-**Core Insight**: Use a rolling hash to efficiently compute hash values of
-consecutive substrings in O(1) time, avoiding O(m) recomputation at each position.
+<Callout title="Core Insight" type="idea">
+Use a rolling hash to efficiently compute hash values of consecutive substrings in O(1) time, avoiding O(m) recomputation at each position.
+</Callout>
 
 ## Algorithm Steps
 

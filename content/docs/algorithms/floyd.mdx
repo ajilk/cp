@@ -168,7 +168,9 @@ find_duplicate([1, 3, 4, 2, 2])  # Returns 2
 - Guaranteed to detect cycle if one exists
 - Can find cycle start with second phase
 - Works on any functional graph (implicit or explicit linked structure)
-- Fast pointer must check `fast and fast.next` to avoid null pointer
+<Callout title="Null Pointer Check" type="warn">
+Always check both `fast` and `fast.next` before moving the fast pointer to avoid null pointer errors.
+</Callout>
 - For arrays, interpret indices as implicit linked list
 
 ## Related Problems

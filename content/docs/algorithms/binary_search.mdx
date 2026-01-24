@@ -6,7 +6,9 @@ title: Binary Search
 
 Binary Search is an efficient search algorithm that finds a target value within a sorted array. It works by repeatedly dividing the search space in half, eliminating half of the remaining elements with each comparison.
 
-**Key Requirement**: The array must be sorted for binary search to work correctly.
+<Callout title="Key Requirement" type="warn">
+The array must be sorted for binary search to work correctly.
+</Callout>
 
 ## Algorithm Steps
 
@@ -59,7 +61,9 @@ result = bs(A, 4)  # Returns -1 (not found)
 ## Key Points
 
 - Requires sorted array as a precondition
-- Use `left + (right - left) // 2` instead of `(left + right) // 2` to avoid integer overflow
+<Callout title="Avoid Integer Overflow" type="warn">
+Use `left + (right - left) // 2` instead of `(left + right) // 2` to avoid overflow.
+</Callout>
 - `left <= right` includes the case where the search space is a single element
 - Can be adapted for finding insertion points, first/last occurrence, or boundary conditions
 

@@ -6,7 +6,9 @@ title: Kadane's Algorithm
 
 Kadane's Algorithm is an efficient dynamic programming algorithm used to find the maximum sum of a contiguous subarray within a one-dimensional array of numbers.
 
-**Core Insight**: At each position, decide whether to extend the current subarray or start a new one from the current element.
+<Callout title="Core Insight" type="idea">
+At each position, decide whether to extend the current subarray or start a new one from the current element.
+</Callout>
 
 ## Algorithm Steps
 

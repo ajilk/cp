@@ -128,4 +128,6 @@ def count_components(n: int, edges: list[list[int]]) -> int:
 - Nearly constant time operations with both optimizations
 - `union()` returns `False` if elements already connected (useful for cycle detection)
 - Path compression happens during `find()`, not `union()`
-- Always use "With Rank" version in competitive programming for optimal performance
+<Callout title="Best Practice" type="success">
+Always use Union Find with rank and path compression in competitive programming for optimal $O(\alpha(n))$ amortized complexity.
+</Callout>

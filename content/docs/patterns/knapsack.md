@@ -14,7 +14,9 @@ Knapsack problems involve selecting items with given weights/costs to maximize v
 
 Given `n` items with weights `w[i]` and values `v[i]`, maximize total value without exceeding capacity `W`.
 
-**Core Insight**: For each item, decide to include it or not. `dp[i][w]` = max value using first `i` items with capacity `w`.
+<Callout title="Core Insight" type="idea">
+For each item, decide to include it or not. `dp[i][w]` = max value using first `i` items with capacity `w`.
+</Callout>
 
 **Recurrence**: `dp[i][w] = max(dp[i-1][w], dp[i-1][w-w[i]] + v[i])`
 

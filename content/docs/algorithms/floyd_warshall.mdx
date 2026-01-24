@@ -121,7 +121,9 @@ def has_negative_cycle(M: list[list[float]]) -> bool:
 
 - Solves all-pairs shortest path in $O(V^3)$ time
 - Works with negative weights (unlike Dijkstra)
-- Order of loops matters: $k$ must be outermost
+<Callout title="Loop Order" type="warn">
+The $k$ loop MUST be outermost. Incorrect ordering breaks the algorithm.
+</Callout>
 - Use for dense graphs or small $V$ (≤400 vertices)
 - For sparse graphs, run Dijkstra $V$ times instead
 - Detects negative cycles: check if $M[i][i] < 0$

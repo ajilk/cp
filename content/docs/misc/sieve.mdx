@@ -12,13 +12,9 @@ An ancient algorithm for finding all prime numbers up to a given limit $n$.
    - If $i$ is still marked prime, mark all multiples of $i$ (starting from $i^2$) as not prime
 4. All indices still marked `True` are prime
 
-## Why Start from $i^2$?
-
-When marking multiples of $i$, all multiples less than $i^2$ have already been marked by smaller primes:
-- $2i$ marked by 2
-- $3i$ marked by 3
-- ...
-- $(i-1) \cdot i$ marked by some prime factor of $(i-1)$
+<Callout title="Why Start from i²?" type="idea">
+When marking multiples of $i$, all multiples less than $i^2$ have already been marked by smaller primes ($2i$ by 2, $3i$ by 3, etc.).
+</Callout>
 
 ## Time Complexity
 
@@ -63,4 +59,5 @@ def sieve(n: int) -> list[bool]:
 **Wheel factorization**: Skip multiples of small primes (2, 3, 5) during iteration.
 
 #### Related Problems
+
 - [204. Count Primes](../leetcode/math/204.mdx)

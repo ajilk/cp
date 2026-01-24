@@ -266,7 +266,9 @@ def heap_sort(A: list[int]) -> list[int]:
 
 ## Key Points
 
-- Heap invariant must hold after every operation (maintained by heapify)
+<Callout title="Core Invariant" type="idea">
+The heap invariant must be restored after every insertion or extraction through heapify operations.
+</Callout>
 - `_heapify_up()` restores invariant after insertion (bubbles up)
 - `_heapify_down()` restores invariant after extraction (bubbles down)
 - Python's `heapq` module implements min heap by default
