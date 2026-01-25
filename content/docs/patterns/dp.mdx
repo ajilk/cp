@@ -1,0 +1,315 @@
+---
+title: Dynamic Programming
+---
+
+## Interview Recognition
+
+**Signals that suggest DP:**
+
+- "Count all ways to..." or "How many distinct ways..."
+- "Minimum/maximum cost path" or "shortest path with constraints"
+- Optimal substructure: solution depends on optimal solutions to subproblems
+- Overlapping subproblems: same subproblems solved repeatedly
+- "Can you reach...?" with multiple paths or choices at each step
+
+<Callout title="When DP is Overkill" type="warn">
+Use greedy instead when: problems have greedy choice property (interval scheduling, jump game reachability), no overlapping subproblems exist, or sorting + single pass works. DP adds unnecessary complexity if greedy suffices.
+</Callout>
+
+**Top-down vs Bottom-up:**
+
+| Aspect           | Top-down (Memoization)           | Bottom-up (Tabulation)             |
+| ---------------- | -------------------------------- | ---------------------------------- |
+| Implementation   | Recursive with cache             | Iterative with table               |
+| Subproblems      | Only computes needed subproblems | Computes all subproblems           |
+| Stack            | Risk of stack overflow           | No recursion overhead              |
+| Space optimize   | Harder to reduce space           | Easier to optimize to O(1) or O(n) |
+| Debugging        | Natural recursive thinking       | Easier to trace table values       |
+| When to use      | Complex state transitions        | When space optimization needed     |
+
+## Overview
+
+Dynamic programming solves problems by breaking them into overlapping subproblems and storing results to avoid recomputation.
+
+**Two required properties:**
+
+- **Optimal Substructure**: An optimal solution contains optimal solutions to subproblems
+- **Overlapping Subproblems**: The same subproblems are solved multiple times
+
+<Callout title="Memoization vs Tabulation" type="info">
+Memoization (top-down) adds caching to recursion. Tabulation (bottom-up) builds solutions iteratively from base cases. Both achieve the same time complexity, but tabulation typically allows better space optimization.
+</Callout>
+
+## Framework
+
+**4-Step DP Approach:**
+
+1. **Define state**: What variables uniquely identify a subproblem? (e.g., `dp[i]` = answer for first `i` elements)
+2. **Define recurrence**: How does current state relate to previous states? (e.g., `dp[i] = dp[i-1] + dp[i-2]`)
+3. **Define base cases**: What are the smallest subproblems with known answers? (e.g., `dp[0] = 0, dp[1] = 1`)
+4. **Optimize space**: Can you reduce from O(n) to O(1) by only keeping needed previous states?
+
+## Examples
+
+<Tabs items={['Climbing Stairs', 'House Robber', 'LIS', 'Edit Distance', 'LCS', 'Unique Paths']}>
+<Tab value="Climbing Stairs">
+**Problem**: Count ways to climb `n` stairs, taking 1 or 2 steps at a time.
+
+**State**: `dp[i]` = number of ways to reach step `i`
+
+**Recurrence**: `dp[i] = dp[i-1] + dp[i-2]` (arrive from one step below or two steps below)
+
+**Base cases**: `dp[0] = 1` (one way to stay at ground), `dp[1] = 1` (one way to reach step 1)
+
+| Metric | Complexity | Reason                       |
+| ------ | ---------- | ---------------------------- |
+| Time   | $O(n)$     | Single pass through n stairs |
+| Space  | $O(1)$     | Only track two previous      |
+
+```python
+def climb_stairs(n: int) -> int:
+    if n <= 2:
+        return n
+
+    pre, cur = 1, 2
+    for _ in range(3, n + 1):
+        pre, cur = cur, pre + cur
+
+    return cur
+```
+
+</Tab>
+<Tab value="House Robber">
+**Problem**: Maximum sum from array where you can't pick adjacent elements.
+
+**State**: `dp[i]` = maximum sum considering first `i` houses
+
+**Recurrence**: `dp[i] = max(dp[i-1], dp[i-2] + A[i])` (skip current or rob current)
+
+**Base cases**: `dp[0] = A[0]`, `dp[1] = max(A[0], A[1])`
+
+| Metric | Complexity | Reason                   |
+| ------ | ---------- | ------------------------ |
+| Time   | $O(n)$     | Single pass through array |
+| Space  | $O(1)$     | Only track two previous   |
+
+```python
+def rob(A: list[int]) -> int:
+    if len(A) == 1:
+        return A[0]
+
+    pre, cur = A[0], max(A[0], A[1])
+    for i in range(2, len(A)):
+        pre, cur = cur, max(cur, pre + A[i])
+
+    return cur
+```
+
+</Tab>
+<Tab value="LIS">
+**Problem**: Find length of longest increasing subsequence.
+
+**State**: `dp[i]` = length of LIS ending at index `i`
+
+**Recurrence**: `dp[i] = max(dp[j] + 1)` for all `j < i` where `A[j] < A[i]`
+
+**Base cases**: `dp[i] = 1` (each element is a subsequence of length 1)
+
+**O(n²) Solution**
+
+| Metric | Complexity | Reason                          |
+| ------ | ---------- | ------------------------------- |
+| Time   | $O(n^2)$   | Nested loops over all pairs     |
+| Space  | $O(n)$     | DP array of size n              |
+
+```python
+def length_of_lis(A: list[int]) -> int:
+    n = len(A)
+    dp = [1] * n
+
+    for i in range(1, n):
+        for j in range(i):
+            if A[j] < A[i]:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+```
+
+**O(n log n) Solution with Binary Search**
+
+<Callout title="Key Insight" type="idea">
+Maintain `tails` array where `tails[i]` = smallest ending element of all increasing subsequences of length `i+1`. Binary search to find position, then update. The length of `tails` is the LIS length.
+</Callout>
+
+| Metric | Complexity    | Reason                         |
+| ------ | ------------- | ------------------------------ |
+| Time   | $O(n \log n)$ | Binary search for each element |
+| Space  | $O(n)$        | Tails array                    |
+
+```python
+from bisect import bisect_left
+
+def length_of_lis(A: list[int]) -> int:
+    tails = []
+
+    for v in A:
+        i = bisect_left(tails, v)
+        if i == len(tails):
+            tails.append(v)
+        else:
+            tails[i] = v
+
+    return len(tails)
+```
+
+</Tab>
+<Tab value="Edit Distance">
+**Problem**: Minimum operations (insert, delete, replace) to convert `word1` to `word2`.
+
+**State**: `dp[i][j]` = edit distance for `word1[:i]` and `word2[:j]`
+
+**Recurrence**:
+- If `word1[i-1] == word2[j-1]`: `dp[i][j] = dp[i-1][j-1]`
+- Else: `dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])` (delete, insert, replace)
+
+**Base cases**: `dp[i][0] = i`, `dp[0][j] = j` (delete all or insert all)
+
+| Metric | Complexity   | Reason               |
+| ------ | ------------ | -------------------- |
+| Time   | $O(m \cdot n)$ | Fill m × n table     |
+| Space  | $O(n)$       | Only need two rows   |
+
+```python
+def min_distance(word1: str, word2: str) -> int:
+    m, n = len(word1), len(word2)
+    pre = list(range(n + 1))
+    cur = [0] * (n + 1)
+
+    for i in range(1, m + 1):
+        cur[0] = i
+        for j in range(1, n + 1):
+            if word1[i - 1] == word2[j - 1]:
+                cur[j] = pre[j - 1]
+            else:
+                cur[j] = 1 + min(pre[j], cur[j - 1], pre[j - 1])
+        pre, cur = cur, pre
+
+    return pre[n]
+```
+
+</Tab>
+<Tab value="LCS">
+**Problem**: Find length of longest common subsequence between two strings.
+
+**State**: `dp[i][j]` = LCS length for `text1[:i]` and `text2[:j]`
+
+**Recurrence**:
+- If `text1[i-1] == text2[j-1]`: `dp[i][j] = dp[i-1][j-1] + 1` (extend LCS)
+- Else: `dp[i][j] = max(dp[i-1][j], dp[i][j-1])` (skip one character)
+
+**Base cases**: `dp[i][0] = 0`, `dp[0][j] = 0` (empty string has no common subsequence)
+
+| Metric | Complexity   | Reason             |
+| ------ | ------------ | ------------------ |
+| Time   | $O(m \cdot n)$ | Fill m × n table   |
+| Space  | $O(n)$       | Only need two rows |
+
+```python
+def longest_common_subsequence(text1: str, text2: str) -> int:
+    m, n = len(text1), len(text2)
+    pre = [0] * (n + 1)
+    cur = [0] * (n + 1)
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i - 1] == text2[j - 1]:
+                cur[j] = pre[j - 1] + 1
+            else:
+                cur[j] = max(pre[j], cur[j - 1])
+        pre, cur = cur, pre
+
+    return pre[n]
+```
+
+</Tab>
+<Tab value="Unique Paths">
+**Problem**: Count paths from top-left to bottom-right in m × n grid, moving only right or down.
+
+**State**: `dp[i][j]` = number of paths to reach cell `(i, j)`
+
+**Recurrence**: `dp[i][j] = dp[i-1][j] + dp[i][j-1]` (from above + from left)
+
+**Base cases**: `dp[0][j] = 1`, `dp[i][0] = 1` (only one way to reach first row/column)
+
+| Metric | Complexity     | Reason                   |
+| ------ | -------------- | ------------------------ |
+| Time   | $O(m \cdot n)$ | Visit each cell once     |
+| Space  | $O(n)$         | Only need current row    |
+
+```python
+def unique_paths(m: int, n: int) -> int:
+    dp = [1] * n
+
+    for _ in range(1, m):
+        for j in range(1, n):
+            dp[j] += dp[j - 1]
+
+    return dp[n - 1]
+```
+
+**With Obstacles**
+
+| Metric | Complexity     | Reason               |
+| ------ | -------------- | -------------------- |
+| Time   | $O(m \cdot n)$ | Visit each cell once |
+| Space  | $O(n)$         | Only need current row |
+
+```python
+def unique_paths_with_obstacles(M: list[list[int]]) -> int:
+    m, n = len(M), len(M[0])
+    dp = [0] * n
+    dp[0] = 1 if M[0][0] == 0 else 0
+
+    for i in range(m):
+        for j in range(n):
+            if M[i][j] == 1:
+                dp[j] = 0
+            elif j > 0:
+                dp[j] += dp[j - 1]
+
+    return dp[n - 1]
+```
+
+</Tab>
+</Tabs>
+
+## Common DP Patterns Summary
+
+| Pattern           | State Definition                 | Example Problems                    |
+| ----------------- | -------------------------------- | ----------------------------------- |
+| Linear            | `dp[i]` = answer for first i     | Climbing stairs, Fibonacci          |
+| Linear w/ choice  | `dp[i]` = answer considering i   | House Robber, Best Time Buy/Sell    |
+| Two sequences     | `dp[i][j]` = answer for s1[:i], s2[:j] | Edit Distance, LCS             |
+| Grid              | `dp[i][j]` = answer at cell (i,j)| Unique Paths, Min Path Sum          |
+| Interval          | `dp[i][j]` = answer for range [i,j] | Matrix Chain, Burst Balloons     |
+| Knapsack          | `dp[i][w]` = answer for items[:i], capacity w | 0/1 Knapsack, Coin Change |
+| State machine     | `dp[i][state]` = answer at i in state | Stock problems with cooldown   |
+| Bitmask           | `dp[mask]` = answer for subset   | TSP, Assignment Problem             |
+
+## Common Edge Cases
+
+| Pattern       | Edge Cases to Handle                                              |
+| ------------- | ----------------------------------------------------------------- |
+| Linear        | Empty input, single element, all same values                      |
+| Two sequences | One or both strings empty, all characters match, no match         |
+| Grid          | Single cell, single row/column, obstacles blocking all paths      |
+| Knapsack      | Zero capacity, item weight exceeds capacity, duplicate items      |
+| Interval      | Single element range, entire array as one interval                |
+
+## Related Problems
+
+- [53. Maximum Subarray](../leetcode/array/53.md) - Kadane's algorithm (linear DP)
+- [152. Maximum Product Subarray](../leetcode/array/152.md) - track min and max
+- [198. House Robber](../leetcode/dp/198.md) - linear DP with choice
+- [322. Coin Change](../leetcode/dp/322.md) - unbounded knapsack variant
+- [Knapsack Pattern](./knapsack.md) - 0/1 and unbounded knapsack problems
