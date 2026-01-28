@@ -29,6 +29,7 @@ Below is the naming convention I use for commonly used variables
 |               `offsets` | stores changes in (dy, dx)                        |
 |                     `G` | graph                                             |
 |                     `D` | distances array (shortest path)                   |
+|                     `W` | weights array (weighted graphs)                   |
 |                `a`, `b` | edge a and b                                      |
 |                   `nei` | neighbor of a graph node                          |
 |                     `q` | queue                                             |
