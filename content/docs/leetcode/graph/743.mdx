@@ -1,0 +1,59 @@
+---
+title: 743. Network Delay Time
+---
+
+<Tabs items={['Dijkstra', 'Bellman-Ford']}>
+<Tab value="Dijkstra">
+
+| Metric | Complexity | Explanation |
+|--------|------------|-------------|
+| Time   | $O((V + E) \log V)$ | Each edge relaxation may push to heap; heap ops are $O(\log V)$ |
+| Space  | $O(V + E)$ | Adjacency list $O(E)$, distance array $O(V)$, heap up to $O(E)$ |
+
+```python
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        G = defaultdict(list)
+        for u, v, w in times:
+            G[u].append([v, w])
+
+        D = [inf] * (n + 1)
+        D[k] = 0
+        heap = [(0, k)]
+
+        while heap:
+            d, u = heappop(heap)
+
+            for v, w in G[u]:
+                nd = d + w
+                if nd < D[v]:
+                    D[v] = nd
+                    heappush(heap, (nd, v))
+
+        result = max(D[1:])
+        return result if result != inf else -1
+```
+</Tab>
+<Tab value="Bellman-Ford">
+
+| Metric | Complexity | Explanation |
+|--------|------------|-------------|
+| Time   | $O(V \cdot E)$ | $n-1$ iterations, each relaxing all $E$ edges |
+| Space  | $O(V)$ | Distance array only |
+
+```python
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        D = [inf] * (n + 1)
+        D[k] = 0
+
+        for _ in range(n - 1):
+            for u, v, w in times:
+                if D[u] + w < D[v]:
+                    D[v] = D[u] + w
+
+        result = max(D[1:])
+        return result if result != inf else -1
+```
+</Tab>
+</Tabs>
