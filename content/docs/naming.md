@@ -36,6 +36,7 @@ Below is the naming convention I use for commonly used variables
 |             `heap`, `h` | heap                                              |
 |               `d`, `hm` | dictionary                                        |
 |                 `stack` | stack                                             |
+|                `window` | current sliding window elements                   |
 |         `left`, `right` | left and right pointers                           |
 |                   `mid` | middle                                            |
 |      `prefix`, `suffix` | prefix/suffix sum/product or values               |
